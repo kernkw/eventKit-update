@@ -39,7 +39,9 @@ class Logger
     {
         $folder = Logger::$log_folder;
         if (!file_exists($folder) and !is_dir($folder)) {
-            mkdir($folder);         
+            $oldumask = umask(0);
+            mkdir($folder, 0777);
+            umask($oldumask);
         }
     }
     
@@ -62,9 +64,9 @@ class Logger
     private static function _log($file, $value)
     {
         self::prepLogs();
-        $file = fopen(Logger::$log_folder."/".$file, 'a+');
+        $file = fopen(join(DIRECTORY_SEPARATOR, array(self::$log_folder, $file)), 'a+');
         if ($file) {
-            fwrite($file, date(DATE_ISO8601)." (".time().") ".$value."\n");
+            fwrite($file, date(DATE_ISO8601)." (".time().") ".trim(preg_replace('/\s+/', ' ', $value))."\n");
             fclose($file);
         }
     }
@@ -85,6 +87,7 @@ class Logger
      ==========================================================================*/
     public static function logError($value)
     {
+        error_log($value);
         self::_log(self::$error_file, $value);
     }
     

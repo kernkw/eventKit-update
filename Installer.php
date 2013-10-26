@@ -59,14 +59,29 @@ class Installer
     public function createNewDatabase()
     {
         try {
+            // CREATE THE DATABASE FOLDER
+            $folder = "db";
+            $db_folder_path = join(DIRECTORY_SEPARATOR, array($folder, uniqid()));
+            if (!file_exists($folder) and !is_dir($folder)) {
+                $oldumask = umask(0);
+                mkdir($folder, 0777);
+                mkdir($db_folder_path, 0777);
+                umask($oldumask);
+            }
+            
             // CREATE THE DATABASE
             $db_name = uniqid().".db";
-            $file_db = new PDO('sqlite:'.$db_name);
+            $db_path = join(DIRECTORY_SEPARATOR, array($db_folder_path, $db_name));
+            $file_db = new PDO("sqlite:$db_path");
+            chmod("$db_path", 0777);
             Logger::logSystem("Created new $db_name database.");
             
             // STORE THE CREDENTIALS
-            $credentials = "<?php\n    define(\"DB_NAME\", \"$db_name\");\n?>";
+            $credentials = "<?php\n    define(\"DB_NAME\", \"$db_path\");\n?>";
+            $index = "<?php\n?>";
             file_put_contents("Constants.php", $credentials, FILE_APPEND | LOCK_EX);
+            file_put_contents(join(DIRECTORY_SEPARATOR, array($folder, "index.php")), $index, FILE_APPEND | LOCK_EX);
+            file_put_contents(join(DIRECTORY_SEPARATOR, array($db_folder_path, "index.php")), $index, FILE_APPEND | LOCK_EX);
             
             // CREATE THE TABLES
             // Each event will have their own table, so first we need to

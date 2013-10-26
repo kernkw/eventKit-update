@@ -27,9 +27,12 @@ if (isset($HTTP_RAW_POST_DATA)) {
     $response = $db->processPost($HTTP_RAW_POST_DATA);
     header($response);
     return;
-}
-
-// IF THERE ISN'T ANY POST DATA, SHOW THE GUI
-
+} else {
+    // IF THERE ISN'T ANY POST DATA, SHOW THE GUI
 ?>
+
 <h1>Hello World</h1>
+
+<?php
+}
+?>

@@ -3,14 +3,6 @@
  * INDEX PAGE
  * ==========================================================================
  *
- * IF YOU ARE VIEWING THIS IN A WEB BROWSER ON YOUR WEBPAGE, PHP IS CURRENTLY
- * NOT INSTALLED ON YOUR WEB HOST.  THE SENDGRID EVENT STARTER KIT REQUIRES:
- *     
- *     - PHP 5.3 OR HIGHER
- *     - SQLITE 3.0 OR HIGHER
- *
- *
- *
  * SUMMARY
  * This page is the main index page. Upon load, it'll determine if a user is
  * viewing the page and display the GUI, or if it's receiving a POST from the
@@ -31,7 +23,30 @@ if (isset($HTTP_RAW_POST_DATA)) {
     // IF THERE ISN'T ANY POST DATA, SHOW THE GUI
 ?>
 
-<h1>Hello World</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SendGrid Event Webhook Starter Kit</title>
+    
+    <!--META TAGS-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <script type="text/x-handlebars" charset="utf-8">
+        <h1>Hello World</h1>
+    </script>
+    
+    <!--EMBER JS-->
+    <script src="js/libs/jquery-1.9.1.js"></script>
+    <script src="js/libs/handlebars-1.0.0.js"></script>
+    <script src="js/libs/ember-1.1.2.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
 
 <?php
 }

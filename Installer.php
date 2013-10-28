@@ -9,7 +9,7 @@
  *
  */
 
-namespace SendGrid\EventStarterKit;
+namespace SendGrid\EventKit;
 
 require_once("Logger.php");
 require_once("DatabaseController.php");
@@ -77,7 +77,7 @@ class Installer
             Logger::logSystem("Created new $db_name database.");
             
             // STORE THE CREDENTIALS
-            $credentials = "<?php\n    define(\"DB_NAME\", \"$db_path\");\n?>";
+            $credentials = "<?php\n    define(\"DB_NAME\", \"$db_path\");\n    define(\"ROOT_DIR\", \"".dirname(__FILE__)."\")?>";
             $index = "<?php\n?>";
             file_put_contents("Constants.php", $credentials, FILE_APPEND | LOCK_EX);
             file_put_contents(join(DIRECTORY_SEPARATOR, array($folder, "index.php")), $index, FILE_APPEND | LOCK_EX);

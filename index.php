@@ -15,7 +15,7 @@ require_once("DatabaseController.php");
 
 // DETERMINE IF THERE'S POST DATA
 if (isset($HTTP_RAW_POST_DATA)) {
-    $db = new SendGrid\EventStarterKit\DatabaseController();
+    $db = new SendGrid\EventKit\DatabaseController();
     $response = $db->processPost($HTTP_RAW_POST_DATA);
     header($response);
     return;

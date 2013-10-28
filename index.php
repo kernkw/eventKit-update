@@ -30,15 +30,47 @@ if (isset($HTTP_RAW_POST_DATA)) {
     
     <!--META TAGS-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    
     
     <!--STYLES-->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/master.css">
 </head>
 <body>
     <script type="text/x-handlebars" charset="utf-8">
-        <h1>Hello World</h1>
+        <div class="nav">
+            <div class="nav_container">
+                <div class="brand"></div>
+                <div class="search">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="body_container">
+            {{outlet}}
+            </div>
+        </div
     </script>
+    
+    <script type="text/x-handlebars" id="index" charset="utf-8">
+        <div class="panel panel-default" style="margin-top: 25px">
+            <div class="panel-body">
+                <h1>Welcome</h1>
+                <p>
+                    The SendGrid Event Webhook Starter Kit serves both as an example of how to harness SendGrid's Event Webhook as well as being a tool for you to keep a record of events.
+                </p>
+            </div>
+        </div>
+    </script>
+    
     
     <!--EMBER JS-->
     <script src="js/libs/jquery-1.9.1.js"></script>

@@ -481,7 +481,7 @@ class DatabaseController
                 foreach (self::$schemas as $key => $value) {
                     array_push($tables, 'SELECT * FROM '.$key);
                 }
-                $sql = 'SELECT COUNT(*) FROM ('.join(' UNION ALL ', $tables).') a WHERE `timestamp` > '.(time() - ($hours * 3600));
+                $sql = 'SELECT COUNT(*) FROM ('.join(' UNION ALL ', $tables).') a WHERE `event_post_timestamp` > '.(time() - ($hours * 3600));
                 $statement = $this->_db->prepare($sql);
                 $statement->execute();
                 $results = $statement->fetchAll(PDO::FETCH_ASSOC);

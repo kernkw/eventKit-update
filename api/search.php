@@ -24,6 +24,18 @@ $response = array();
 if ($_GET['query']) {
     $response['message'] = 'success';
     $response['data'] = $db->processQuery($_GET);
+
+	if (array_key_exists("resultsPerPage", $_GET)) {
+        $resultsPerPage = $_GET["resultsPerPage"];
+        $mod = count($response['data']) % ($_GET["resultsPerPage"] * 1);
+        $totalPages = (count($response['data']) - $mod) / $resultsPerPage;
+        if ($mod) $totalPages++;
+        $pageArray = array();
+        for ($i = 1; $i <= $totalPages; $i++) {
+            array_push($pageArray, $i);
+        }
+        $response['pages'] = $pageArray;
+    }
 } else {
     // IF NO QUERY PARAMETER IS SET, FILL IN AN ERROR MESSAGE IN THE RESPONSE.
     $response['message'] = 'error';

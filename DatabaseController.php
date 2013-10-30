@@ -487,6 +487,21 @@ class DatabaseController
                 $results = $statement->fetchAll(PDO::FETCH_ASSOC);
                 $response = $results[0]['COUNT(*)'] * 1;
                 break;
+
+                // WILDCARD
+                // Performs a wildcard search for the parameter `text` in the 
+                // database.
+                case 'wildcard':
+                $tables = array();
+                foreach (self::$schemas as $key => $value) {
+                    array_push($tables, 'SELECT * FROM '.$key);
+                }
+                $sql = 'SELECT * FROM ('.join(' UNION ALL ', $tables).') a WHERE `raw` LIKE \'%'.$params['text'].'%\'ORDER BY `timestamp` DESC';
+                $statement = $this->_db->prepare($sql);
+                $statement->execute();
+                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $response = $this->_decodeAllJson($results);
+                break;
             }
         }
         

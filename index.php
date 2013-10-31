@@ -49,7 +49,9 @@ if (isset($HTTP_RAW_POST_DATA)) {
     <script type="text/x-handlebars" charset="utf-8">
         <div class="nav">
             <div class="nav_container">
-                <a href="#"><div class="brand"></div></a>
+                <a href="#">
+                    <div class="brand"></div>
+                </a>
                 <div class="search">
                     <div class="navbar-form navbar-left" role="search">
                         <div class="form-group">
@@ -94,13 +96,13 @@ if (isset($HTTP_RAW_POST_DATA)) {
                 <div class="list-group" style="overflow-y: auto; height: 275px;">
                     {{#if data.length}}
                         {{#each data}}
-                            <a href="#" class="list-group-item">
+                            {{#link-to 'event' this classNames="list-group-item"}}
                                 <h3 style="font-size: 18px; margin: 0px;">
                                     {{event-color event}}
                                 </h3>
                                 <p style="font-size: 10px; margin: 0px; color: #AAA;">{{format-date timestamp}}</p>
                                 <p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{email}}</p>
-                            </a>
+                            {{/link-to}}
                         {{/each}}
                     {{else}}
                         <span href="#" class="list-group-item">
@@ -147,7 +149,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
             <div class="list-group">
                 {{#if data.length}}
                     {{#each data}}
-                        <a href="#" class="list-group-item">
+                        {{#link-to 'event' this classNames="list-group-item"}}
                             <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout:fixed;">
                                 <tr>
                                     <td style="width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: top;">
@@ -164,7 +166,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
                                             <p class="truncate" style="font-size: 14px; margin: 0px;">{{email}}</p>
                                         {{/if}}
                                         {{#if url}}
-                                            <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{url}}</p>
+                                            <p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{url}}</p>
                                         {{/if}}
                                     </td>
                                     <td style="width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: top;">
@@ -177,12 +179,13 @@ if (isset($HTTP_RAW_POST_DATA)) {
                                             </ul>
                                         {{/if}}
                                         {{#if additional_arguments}}
+                                            <p style="margin: 0px; font-weight: bold;">Additional Arguments</p>
                                             {{list-additional-arguments additional_arguments}}
                                         {{/if}}
                                     </td>
                                 </tr>
                             </table>
-                        </a>
+                        {{/link-to}}
                     {{/each}}
                 {{else}}
                     <div class="list-group-item">
@@ -202,8 +205,137 @@ if (isset($HTTP_RAW_POST_DATA)) {
         {{/if}}
         <h1>&nbsp;</h1>
     </script>
-    
-    
+
+
+    <!--
+    *
+    * EVENT INSPECTOR PAGE
+    *
+    *****************************************************-->
+    <script type="text/x-handlebars" id="event">
+        <span class="outer-text">
+            <h1>Event Details</h1>
+            {{#if event}}
+                <h2 style="font-size: 22px; margin-bottom: 0px;">{{event-color event}}</h2>
+            {{/if}}
+            {{#if email}}
+                <h2 style="font-size: 18px; margin: 0px;">{{email}}</h2>
+            {{/if}}
+        </span>
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%; table-layout:fixed;">
+            <tr>
+                <td style="width: 415px; vertical-align: top;">
+                    <div class="panel panel-info" style="margin-top: 25px;">
+                        <div class="panel-heading">
+                            Event Information
+                        </div>
+                        <div class="panel-body">
+                            {{#if timestamp}}
+                                <p><b>Time:</b></p>
+                                <ul><li>{{format-date timestamp}}</li></ul>
+                            {{/if}}
+
+                            {{#if subject}}
+                                <p><b>Subject:</b></p>
+                                <ul><li>{{subject}}</li></ul>
+                            {{/if}}
+
+                            {{#if smtpid}}
+                                <p><b>SMTP-ID:</b></p>
+                                <ul><li><span id='current_smtpid'>{{smtpid}}</span></li></ul>
+                            {{/if}}
+
+                            {{#if sg_event_id}}
+                                <p><b>SendGrid Event ID:</b></p>
+                                <ul><li>{{sg_event_id}}</li></ul>
+                            {{/if}}
+
+                            {{#if category}}
+                                <p><b>Categories:</b></p>
+                                <ul>
+                                    {{#each category}}
+                                        <li>{{this}}</li>
+                                    {{/each}}
+                                </ul>
+                            {{/if}}
+
+                            {{#if newsletter}}
+                                <p><b>Newsletter Info:</b></p>
+                                <ul>
+                                    <li>Newsletter ID: {{newsletter.newsletter_id}}</li>
+                                    <li>User List ID: {{newsletter.newsletter_user_list_id}}</li>
+                                    <li>Send ID: {{newsletter.newsletter_send_id}}</li>
+                                </ul>
+                            {{/if}}
+
+                            {{#if reason}}
+                                <p><b>Reason:</b></p>
+                                <ul><li>{{reason}}</li></ul>
+                            {{/if}}
+
+                            {{#if response}}
+                                <p><b>Response:</b></p>
+                                <ul><li>{{response}}</li></ul>
+                            {{/if}}
+
+                            {{#if url}}
+                                <p><b>URL:</b></p>
+                                <ul><li>{{url}}</li></ul>
+                            {{/if}}
+
+                            {{#if ip}}
+                                <p><b>IP:</b></p>
+                                <ul><li>{{ip}}</li></ul>
+                            {{/if}}
+
+                            {{#if useragent}}
+                                <p><b>User Agent:</b></p>
+                                <ul><li>{{useragent}}</li></ul>
+                            {{/if}}
+
+                            {{#if attempt}}
+                                <p><b>Attempt:</b> {{attempt}}</p>
+                            {{/if}}
+
+                            {{#if status}}
+                                <p><b>Status:</b></p>
+                                <ul><li>{{status}}</li></ul>
+                            {{/if}}
+
+                            {{#if type}}
+                                <p><b>Type:</b></p>
+                                <ul><li class="truncate">{{type}}</li></ul>
+                            {{/if}}
+
+                            {{#if sg_message_id}}
+                                <p><b>SendGrid Message ID:</b></p>
+                                <ul><li class="truncate">{{smtpid}}</li></ul>
+                            {{/if}}
+
+                            {{#if additional_arguments}}
+                                <p><b>Additional Arguments</b></p>
+                                {{list-additional-arguments additional_arguments}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 40px"></td>
+                <td style="width: 415px; vertical-align: top;">
+                    <div class="panel panel-info" style="margin-top: 25px;">
+                        <div class="panel-heading">
+                            Related Events
+                        </div>
+                        <div class="panel-body">
+                            Related events are determined by the SMTP-ID of the message. Keep in mind that not all events have an SMTP-ID (such as opens), so you might not see all the related events listed below.
+                        </div>
+                        <div class="list-group" style="overflow-y: auto;" id="related-group">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </script>
+
     <!--EMBER JS-->
     <script src="js/libs/jquery-1.9.1.js"></script>
     <script src="js/libs/handlebars-1.0.0.js"></script>
@@ -211,6 +343,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
     <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/search.js"></script>
+    <script src="js/event.js"></script>
     <script src="js/helpers.js"></script>
 </body>
 </html>

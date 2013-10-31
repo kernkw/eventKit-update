@@ -13,7 +13,7 @@ Ember.Handlebars.helper('format-event', function(event) {
 	return events[event];
 });
 
-Ember.Handlebars.helper('event-color', function(event) {
+var formatEventWithColor = function(event) {
 	var events = {
 		bounce: '<span style="color:#880">Bounce</span>',
 		click: '<span style="color:#008">Click</span>',
@@ -25,7 +25,11 @@ Ember.Handlebars.helper('event-color', function(event) {
 		spamreport: '<span style="color:#800">Spam Report</span>',
 		unsubscribe: '<span style="color:#088">Unsubscribe</span>'
 	};
-	return new Handlebars.SafeString(events[event]);
+	return events[event];
+};
+
+Ember.Handlebars.helper('event-color', function(event) {
+	return new Handlebars.SafeString(formatEventWithColor(event));
 });
 
 Ember.Handlebars.helper('plural-event', function(count) {
@@ -33,19 +37,15 @@ Ember.Handlebars.helper('plural-event', function(count) {
 	else return "Events";
 });
 
-Ember.Handlebars.helper('format-date', function(date) {
+var formatDateToLocal = function(date) {
 	var date = new Date(date * 1000);
 	return date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-});
+};
+
+Ember.Handlebars.helper('format-date', formatDateToLocal);
 
 Ember.Handlebars.helper('list-additional-arguments', function(args) {
 	var div = jQuery('<div/>');
-
-	jQuery('<p/>', {
-		style: "margin: 0px; font-weight: bold;"
-	})
-	.html('Additional Arguments:')
-	.appendTo(div);
 
 	var ul = jQuery('<ul/>').appendTo(div);
 

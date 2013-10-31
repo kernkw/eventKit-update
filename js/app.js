@@ -21,6 +21,9 @@ App.Router.map(function() {
 
   	// SEARCH
   	this.resource('search', { path: "/search/:query/page/:page" });
+
+  	// EVENT INSPECTOR
+  	this.resource('event', { path: "/event/:uid" });
 });
 
 App.ApplicationController = Ember.Controller.extend({

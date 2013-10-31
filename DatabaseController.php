@@ -48,7 +48,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "click" => array(
             "timestamp" => "INT",
@@ -70,7 +71,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "deferred" => array(
             "timestamp" => "INT",
@@ -92,7 +94,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "delivered" => array(
             "timestamp" => "INT",
@@ -114,7 +117,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "dropped" => array(
             "timestamp" => "INT",
@@ -136,7 +140,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "open" => array(
             "timestamp" => "INT",
@@ -158,7 +163,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "processed" => array(
             "timestamp" => "INT",
@@ -180,7 +186,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "spamreport" => array(
             "timestamp" => "INT",
@@ -202,7 +209,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "unsubscribe" => array(
             "timestamp" => "INT",
@@ -224,7 +232,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         ),
         "other" => array(
             "timestamp" => "INT",
@@ -246,7 +255,8 @@ class DatabaseController
             "url" => "TEXT",
             "additional_arguments" => "TEXT",
             "event_post_timestamp" => "INT",
-            "raw" => "TEXT"
+            "raw" => "TEXT",
+            "uid" => "TEXT"
         )
     );
     
@@ -369,6 +379,7 @@ class DatabaseController
         // This is the array we'll use to add data to the database. It
         // follows the schema of the target table.
         $table_values = array(
+            "uid" => md5(uniqid()),
             "event_post_timestamp" => time(),
             "raw" => json_encode($notification)
         );
@@ -453,55 +464,85 @@ class DatabaseController
         $response = array();
         
         if (array_key_exists('query', $params)) {
+            $tables = array();
+            foreach (self::$schemas as $key => $value) {
+                array_push($tables, 'SELECT * FROM '.$key);
+            }
+
             switch ($params['query']) {
                 // RECENT
                 // Retrieves the last `n` events where `n` is specified in the
                 // `limit` parameter (all events). If `limit` isn't specified,
                 // it defaults to 5.
                 case 'recent':
-                $limit = isset($params['limit']) ? $params['limit'] : 5;
-                $tables = array();
-                foreach (self::$schemas as $key => $value) {
-                    array_push($tables, 'SELECT * FROM '.$key);
-                }
-                $sql = 'SELECT * FROM ('.join(' UNION ALL ', $tables).') a ORDER BY `timestamp` DESC LIMIT '.$limit;
-                $statement = $this->_db->prepare($sql);
-                $statement->execute();
-                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $response = $this->_decodeAllJson($results);
-                break;
+                    $limit = isset($params['limit']) ? $params['limit'] : 5;
+                    $sql = 'SELECT * FROM ('.join(' UNION ALL ', $tables).') a ORDER BY `timestamp` DESC LIMIT '.$limit;
+                    $statement = $this->_db->prepare($sql);
+                    $statement->execute();
+                    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $response = $this->_decodeAllJson($results);
+                    break;
                 
                 // TOTAL
                 // Counts the number of events in the past `n` hours, where
                 // `n` is specified in the `hours` parameter. If `hours` isn't
                 // defined, then it'll default to 24 hours.
                 case 'total':
-                $hours = isset($params['hours']) ? $params['hours'] : 24;
-                $tables = array();
-                foreach (self::$schemas as $key => $value) {
-                    array_push($tables, 'SELECT * FROM '.$key);
-                }
-                $sql = 'SELECT COUNT(*) FROM ('.join(' UNION ALL ', $tables).') a WHERE `event_post_timestamp` > '.(time() - ($hours * 3600));
-                $statement = $this->_db->prepare($sql);
-                $statement->execute();
-                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $response = $results[0]['COUNT(*)'] * 1;
-                break;
+                    $hours = isset($params['hours']) ? $params['hours'] : 24;
+                    $sql = 'SELECT COUNT(*) FROM ('.join(' UNION ALL ', $tables).') a WHERE `event_post_timestamp` > '.(time() - ($hours * 3600));
+                    $statement = $this->_db->prepare($sql);
+                    $statement->execute();
+                    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $response = $results[0]['COUNT(*)'] * 1;
+                    break;
 
-                // WILDCARD
-                // Performs a wildcard search for the parameter `text` in the 
-                // database.
-                case 'wildcard':
-                $tables = array();
-                foreach (self::$schemas as $key => $value) {
-                    array_push($tables, 'SELECT * FROM '.$key);
-                }
-                $sql = 'SELECT * FROM ('.join(' UNION ALL ', $tables).') a WHERE `raw` LIKE \'%'.$params['text'].'%\'ORDER BY `timestamp` DESC';
-                $statement = $this->_db->prepare($sql);
-                $statement->execute();
-                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $response = $this->_decodeAllJson($results);
-                break;
+                    // WILDCARD
+                    // Performs a wildcard search for the parameter `text` in the 
+                    // database.
+                    case 'wildcard':
+                    $sql = 'SELECT * FROM ('.join(' UNION ALL ', $tables).') a WHERE `raw` LIKE \'%'.$params['text'].'%\'ORDER BY `timestamp` DESC';
+                    $statement = $this->_db->prepare($sql);
+                    $statement->execute();
+                    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $response = $this->_decodeAllJson($results);
+                    break;
+
+                // DETAILED SEARCH
+                // Performs a search with multiple parameters. The only required
+                // parameter is `match`, which specifies if all of the search 
+                // parameters have to be met, or any of them.
+                case 'detailed':
+                    if (isset($params['match'])) {
+                        $match = ' OR ';
+                        if ($params['match'] === 'all') $match = ' AND ';
+                        $limit = isset($params['limit']) ? $params['limit'] : 5;
+                        $fields = array();
+                        foreach ($params as $key => $value) {
+                            switch ($key) {
+                                default:
+                                    array_push($fields, "`$key` = '$value'");
+                                    break;
+
+                                case 'dateStart':
+                                    array_push($fields, '`timestamp` >= $value');
+                                    break;
+                                
+                                case 'dateEnd':
+                                    array_push($fields, '`timestamp` <= $value');
+                                    break;
+
+                                case 'match':
+                                case 'query':
+                                    break;
+                            }
+                        }
+                        $sql = 'SELECT * FROM ('.join(' UNION ALL ', $tables).') a WHERE '.join($match, $fields).' ORDER BY `timestamp` DESC LIMIT '.$limit;
+                        $statement = $this->_db->prepare($sql);
+                        $statement->execute();
+                        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                        $response = $this->_decodeAllJson($results);
+                    }
+                    break;
             }
         }
         

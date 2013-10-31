@@ -67,3 +67,9 @@
 h1, h2, h3 {
     font-weight: 900;
 }
+
+.truncate {
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    vertical-align: top;
+}

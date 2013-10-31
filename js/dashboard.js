@@ -38,8 +38,8 @@ App.DashboardController = Ember.Controller.extend({
 				page = 1;
 			Ember.$.getJSON('api/search.php?query=wildcard&text=' + this.get('query')).then(function(response) {
 				var resultsPerPage = 20,
-				mod = response.length % resultsPerPage,
-				totalPages = (response.length - mod) / resultsPerPage;
+					mod = response.length % resultsPerPage,
+					totalPages = (response.length - mod) / resultsPerPage;
 				if (mod) totalPages++;
 				pageArray = [];
 				for (var i = 1; i <= totalPages; i++) {

@@ -38,11 +38,27 @@ Ember.Handlebars.helper('format-date', function(date) {
 	return date.toLocaleDateString() + " at " + date.toLocaleTimeString();
 });
 
+Ember.Handlebars.helper('list-additional-arguments', function(args) {
+	var div = jQuery('<div/>');
+
+	jQuery('<p/>', {
+		style: "margin: 0px; font-weight: bold;"
+	})
+	.html('Additional Arguments:')
+	.appendTo(div);
+
+	var ul = jQuery('<ul/>').appendTo(div);
+
+	for (var key in args) {
+		jQuery('<li/>')
+		.html(key + ": " + args[key])
+		.appendTo(ul);
+	}
+
+	return new Handlebars.SafeString(div.html());
+});
+
 Ember.Handlebars.helper('result-pagination', function(pages) {
-	// Instead of looping over each index and passing the index,
-	// pass the whole index array and generate everything here.
-	//<li><a href="#">&laquo;</a></li>              
-    //<li><a href="#">&raquo;</a></li>
 	var hash = window.location.hash,
 		splits = hash.split('/'),
 		current = splits[splits.length - 1] * 1,
@@ -68,7 +84,6 @@ Ember.Handlebars.helper('result-pagination', function(pages) {
 	var endIndex = startIndex + numberOfLinksToShow;
 	if (endIndex > last) endIndex = last;
 	pages.forEach(function(page, i, array) {
-		console.log(current - buffer);
 		if (page >= startIndex && page <= endIndex) {
 			var thisPath = splits.slice(0);
 			thisPath.push(page);

@@ -77,7 +77,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
             </div>
         </div>
         
-        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%; table-layout:fixed;">
             <tr>
                 {{outlet}}
             </tr>
@@ -99,7 +99,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
                                     {{event-color event}}
                                 </h3>
                                 <p style="font-size: 10px; margin: 0px; color: #AAA;">{{format-date timestamp}}</p>
-                                <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{email}}</p>
+                                <p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{email}}</p>
                             </a>
                         {{/each}}
                     {{else}}
@@ -148,15 +148,40 @@ if (isset($HTTP_RAW_POST_DATA)) {
                 {{#if data.length}}
                     {{#each data}}
                         <a href="#" class="list-group-item">
-                            <h3 style="font-size: 18px; margin: 0px;">
-                                {{event-color event}}
-                            </h3>
-                            {{#if timestamp}}
-                                <p style="font-size: 10px; margin: 0px; color: #AAA;">{{format-date timestamp}}</p>
-                            {{/if}}
-                            {{#if email}}
-                                <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{email}}</p>
-                            {{/if}}
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout:fixed;">
+                                <tr>
+                                    <td style="width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: top;">
+                                        <h3 style="font-size: 18px; margin: 0px;">
+                                            {{event-color event}}
+                                        </h3>
+                                        {{#if timestamp}}
+                                            <p style="font-size: 10px; margin: 0px; color: #AAA;">{{format-date timestamp}}</p>
+                                        {{/if}}
+                                        {{#if subject}}
+                                            <i><p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px; font-weight: bold;">{{subject}}</p></i>
+                                        {{/if}}
+                                        {{#if email}}
+                                            <p class="truncate" style="font-size: 14px; margin: 0px;">{{email}}</p>
+                                        {{/if}}
+                                        {{#if url}}
+                                            <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{url}}</p>
+                                        {{/if}}
+                                    </td>
+                                    <td style="width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: top;">
+                                        {{#if category}}
+                                            <p style="margin: 0px; font-weight: bold">Categories:</p>
+                                            <ul>
+                                                {{#each category}}
+                                                    <li>{{this}}</li>
+                                                {{/each}}
+                                            </ul>
+                                        {{/if}}
+                                        {{#if additional_arguments}}
+                                            {{list-additional-arguments additional_arguments}}
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            </table>
                         </a>
                     {{/each}}
                 {{else}}

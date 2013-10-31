@@ -12,21 +12,25 @@
 
 App.EventController = Ember.ObjectController.extend({
 	modelDidChange: function() {
+		// FIND ANY RELATED POSTS BY SMTP-ID
 		var smtpid = this.get('model.smtpid'),
+			event = this.get('model.event'),
+			reason = this.get('model.reason'),
+			email = this.get('model.email'),
 			group = $("#related-group"),
 			noResults = '<span href="#" class="list-group-item"><h3 style="font-size: 18px; margin-top: 1em; margin-bottom: 1em;">No related events found.</h3></span>';
 		group.html('');
-		
+
 		if (smtpid) {
 			var related = {
-					query: 'detailed',
-					match: 'all',
-					smtpid: smtpid,
-					email: this.get('model.email')
-				},
+				query: 'detailed',
+				match: 'all',
+				smtpid: smtpid,
+				email: email
+			},
 				self = this;
 			Ember.$.getJSON('api/search.php?' + $.param(related)).then(function(events) {
-				
+
 				if (events.data && events.data.length > 1) {
 					events.data.forEach(function(value, i, array) {
 						var eventName = formatEventWithColor(value.event);
@@ -53,21 +57,42 @@ App.EventController = Ember.ObjectController.extend({
 		} else {
 			group.html(noResults);
 		}
+
+		// IF THIS IS A DROP, ADD A MORE DESCRIPTIVE REASON FOR THE DROP
+		if (event === 'dropped') {
+			var descriptions = {
+				bounce: "This email was dropped because \"__EMAIL__\" is on your bounce list.  To continue sending to this address, go to <a href=\"http://sendgrid.com/bounces\">http://sendgrid.com/bounces</a> and delete it from the list.",
+				unsubscribe: "This email was dropped because \"__EMAIL__\" is on your unsubscribe list.  To continue sending to this address, go to <a href=\"http://sendgrid.com/unsubscribes\">http://sendgrid.com/unsubscribes</a> and delete it from the list.",
+				invalid: "This email was dropped because \"__EMAIL__\" is an invalid email address.  See your invalid email list at <a href=\"http://sendgrid.com/invalidEmail\">http://sendgrid.com/invalidEmail</a> for more info.",
+				spam: "This email was dropped because \"__EMAIL__\" reported one of your previous messages as spam, and got added to your spam report list.  To continue sending to this address, go to <a href=\"http://sendgrid.com/spamReports\">http://sendgrid.com/spamReports</a> and delete it from the list."
+			},
+				reason;
+
+			for (var type in descriptions) {
+				var regex = new RegExp(type, "gi");
+				if (reason.match(regex)) {
+					reason = descriptions[type].replace('__EMAIL__', email);
+				}
+			}
+			if (reason) {
+				jQuery('<p/>').html(reason).appendTo("#event-info-body");
+			}
+		}
 	}.observes('model')
-			
+
 });
 
 App.EventRoute = Ember.Route.extend({
- 	setupController: function(controller, model) {
- 		var uid = model.uid,
+	setupController: function(controller, model) {
+		var uid = model.uid,
 			searchParams = {
 				query: 'detailed',
 				match: 'all',
 				uid: uid
 			};
-		
+
 		Ember.$.getJSON('api/search.php?' + $.param(searchParams)).then(function(response) {
 			controller.set('model', response.data[0]);
 		});
- 	}
- });
+	}
+});

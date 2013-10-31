@@ -229,7 +229,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
                         <div class="panel-heading">
                             Event Information
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="event-info-body">
                             {{#if timestamp}}
                                 <p><b>Time:</b></p>
                                 <ul><li>{{format-date timestamp}}</li></ul>
@@ -326,7 +326,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
                             Related Events
                         </div>
                         <div class="panel-body">
-                            Related events are determined by the SMTP-ID of the message. Keep in mind that not all events have an SMTP-ID (such as opens), so you might not see all the related events listed below.
+                            Related events are determined by the SMTP-ID of the message. Keep in mind that not all events have an SMTP-ID (such as opens and clicks), so you might not see all the related events listed below.
                         </div>
                         <div class="list-group" style="overflow-y: auto;" id="related-group">
                         </div>

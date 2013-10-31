@@ -51,8 +51,8 @@ Ember.Handlebars.helper('list-additional-arguments', function(args) {
 
 	for (var key in args) {
 		jQuery('<li/>')
-		.html(key + ": " + args[key])
-		.appendTo(ul);
+			.html(key + ": " + args[key])
+			.appendTo(ul);
 	}
 
 	return new Handlebars.SafeString(div.html());
@@ -63,7 +63,7 @@ Ember.Handlebars.helper('result-pagination', function(pages) {
 		splits = hash.split('/'),
 		current = splits[splits.length - 1] * 1,
 		last = pages[pages.length - 1];
-		div = jQuery('<div/>');
+	div = jQuery('<div/>');
 	splits.pop();
 
 	// FIRST PAGE BUTTON

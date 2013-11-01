@@ -108,3 +108,44 @@ Ember.Handlebars.helper('result-pagination', function(pages) {
 
 	return new Handlebars.SafeString(div.html());
 });
+
+Ember.Handlebars.helper('add-search-filter', function(filter) {
+	var div = jQuery('<div/>');
+
+	jQuery('<label/ > ', {
+		for: filter.id,
+		class: "col-sm-2 control-label"
+	}).html(filter.name).css('width', '170px').css('marginRight', '10px').css('textAlign', 'right').appendTo(div);
+
+	if (filter.id === "dateStart" || filter.id === "dateEnd") {
+		jQuery('<input/>', {
+			class: "form-control init-date-picker",
+			placeholder: filter.name,
+			type: 'text',
+			name: filter.id
+		}).css('width', '500px').appendTo(div);
+	} else if (filter.id === "additional_arguments") {
+		jQuery('<input/>', {
+			class: "form-control",
+			placeholder: 'Argument Key',
+			type: 'text',
+			name: filter.id + "_key"
+		}).css('width', '245px').css('marginRight', '10px').appendTo(div);
+
+		jQuery('<input/>', {
+			class: "form-control",
+			placeholder: "Argument Value",
+			type: "text",
+			name: filter.id + "_value"
+		}).css('width', '245px').appendTo(div);
+	} else {
+		jQuery('<input/>', {
+			class: "form-control",
+			placeholder: filter.name,
+			type: 'text',
+			name: filter.id
+		}).css('width', '500px').appendTo(div);
+	}
+
+	return new Handlebars.SafeString(div.html());
+});

@@ -33,7 +33,8 @@ if (isset($HTTP_RAW_POST_DATA)) {
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/datepicker.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/master.css">
@@ -145,6 +146,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
             <div class="panel-body">
                 <h1 style="margin:0px;">Search Results</h1>
                 <p style="margin:0px; color: #888; font-size: 14px;">For "{{query}}"</p>
+                <p>Go to the {{#link-to 'detailedSearch'}}Detailed Search{{/link-to}} to add filters to your search.</p>
             </div>
             <div class="list-group">
                 {{#if data.length}}
@@ -206,6 +208,35 @@ if (isset($HTTP_RAW_POST_DATA)) {
         <h1>&nbsp;</h1>
     </script>
 
+    <script type="text/x-handlebars" id="detailedSearch">
+        <div class="panel panel-default" style="margin-top: 25px">
+            <div class="panel-body">
+                <h1 style="margin:0px;">Narrow Your Search</h1>
+                <p style="margin-top: 0px;">Add filters below to narrow down your search:</p>
+                <form id="detailedSearchParams" class="form-inline" role="form" style="margin-bottom: 15px" action="/results" method="GET">
+                    {{#each this}}
+                        <div class="form-group filter-row">
+                            {{add-search-filter this}}
+                            <button type="button" class="btn btn-danger" style="margin-left: 10px" {{action "removeFilter" this}}>Remove Filter</button>
+                        </div>
+                    {{/each}}
+                </form>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        Add Filter <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" id="add_filter_menu">
+                        {{#each allFilters}}
+                            <li><a {{action "addFilter" this}}>{{name}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+
+                <button type="button" class="btn btn-success" {{action "submitSearch"}}>Search</button>
+            </div>
+        </div>
+    </script>
 
     <!--
     *
@@ -233,6 +264,11 @@ if (isset($HTTP_RAW_POST_DATA)) {
                             {{#if timestamp}}
                                 <p><b>Time:</b></p>
                                 <ul><li>{{format-date timestamp}}</li></ul>
+                            {{/if}}
+
+                            {{#if event_post_timestamp}}
+                                <p><b>Event Posted At:</b></p>
+                                <ul><li>{{format-date event_post_timestamp}}</li></ul>
                             {{/if}}
 
                             {{#if subject}}
@@ -338,8 +374,10 @@ if (isset($HTTP_RAW_POST_DATA)) {
 
     <!--EMBER JS-->
     <script src="js/libs/jquery-1.9.1.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
     <script src="js/libs/handlebars-1.0.0.js"></script>
     <script src="js/libs/ember-1.1.2.js"></script>
+    <script src="js/libs/bootstrap.js"></script>
     <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/search.js"></script>

@@ -30,6 +30,11 @@ App.Router.map(function() {
 		path: "/search/:query/page/:page"
 	});
 
+	// DETAILED SEARCH ENTRY
+	this.resource('detailedSearch', {
+		path: "/detailed_search"
+	});
+
 	// EVENT INSPECTOR
 	this.resource('event', {
 		path: "/event/:uid"

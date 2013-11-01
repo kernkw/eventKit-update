@@ -73,3 +73,7 @@ h1, h2, h3 {
     text-overflow: ellipsis; 
     vertical-align: top;
 }
+
+.filter-row {
+    margin-top: 15px;
+}

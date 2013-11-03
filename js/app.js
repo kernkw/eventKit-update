@@ -35,6 +35,10 @@ App.Router.map(function() {
 		path: "/detailed_search"
 	});
 
+	this.resource('detailedSearchResults', {
+		path: "/detailed_search/:query/results/:page"
+	});
+
 	// EVENT INSPECTOR
 	this.resource('event', {
 		path: "/event/:uid"
@@ -50,7 +54,7 @@ App.ApplicationController = Ember.Controller.extend({
 				query = this.get('query'),
 				page = 1;
 			Ember.$.getJSON('api/search.php?query=wildcard&text=' + query).then(function(response) {
-				var resultsPerPage = 20,
+				var resultsPerPage = 10,
 					mod = response.length % resultsPerPage,
 					totalPages = (response.length - mod) / resultsPerPage;
 				if (mod) totalPages++;

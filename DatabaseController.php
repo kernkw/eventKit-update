@@ -465,10 +465,10 @@ class DatabaseController {
             }
 
             switch ( $params['query'] ) {
-            // RECENT
-            // Retrieves the last `n` events where `n` is specified in the
-            // `limit` parameter (all events). If `limit` isn't specified,
-            // it defaults to 5.
+                // RECENT
+                // Retrieves the last `n` events where `n` is specified in the
+                // `limit` parameter (all events). If `limit` isn't specified,
+                // it defaults to 5.
             case 'recent':
                 $limit = isset( $params['limit'] ) ? $params['limit'] : 5;
                 $sql = 'SELECT * FROM ('.join( ' UNION ALL ', $tables ).') a ORDER BY `timestamp` DESC LIMIT '.$limit;
@@ -478,10 +478,10 @@ class DatabaseController {
                 $response = $this->_decodeAllJson( $results );
                 break;
 
-            // TOTAL
-            // Counts the number of events in the past `n` hours, where
-            // `n` is specified in the `hours` parameter. If `hours` isn't
-            // defined, then it'll default to 24 hours.
+                // TOTAL
+                // Counts the number of events in the past `n` hours, where
+                // `n` is specified in the `hours` parameter. If `hours` isn't
+                // defined, then it'll default to 24 hours.
             case 'total':
                 $hours = isset( $params['hours'] ) ? $params['hours'] : 24;
                 $sql = 'SELECT COUNT(*) FROM ('.join( ' UNION ALL ', $tables ).') a WHERE `event_post_timestamp` > '.( time() - ( $hours * 3600 ) );
@@ -491,9 +491,9 @@ class DatabaseController {
                 $response = $results[0]['COUNT(*)'] * 1;
                 break;
 
-            // WILDCARD
-            // Performs a wildcard search for the parameter `text` in the
-            // database.
+                // WILDCARD
+                // Performs a wildcard search for the parameter `text` in the
+                // database.
             case 'wildcard':
                 $sql = 'SELECT * FROM ('.join( ' UNION ALL ', $tables ).') a WHERE `raw` LIKE \'%'.$params['text'].'%\'ORDER BY `timestamp` DESC';
                 $statement = $this->_db->prepare( $sql );
@@ -502,36 +502,45 @@ class DatabaseController {
                 $response = $this->_decodeAllJson( $results );
                 break;
 
-            // DETAILED SEARCH
-            // Performs a search with multiple parameters. The only required
-            // parameter is `match`, which specifies if all of the search
-            // parameters have to be met, or any of them.
+                // DETAILED SEARCH
+                // Performs a search with multiple parameters. The only required
+                // parameter is `match`, which specifies if all of the search
+                // parameters have to be met, or any of them.
             case 'detailed':
                 if ( isset( $params['match'] ) ) {
                     $match = ' OR ';
                     if ( $params['match'] === 'all' ) $match = ' AND ';
-                    $limit = isset( $params['limit'] ) ? $params['limit'] : 5;
                     $fields = array();
                     foreach ( $params as $key => $value ) {
                         switch ( $key ) {
                         default:
-                            array_push( $fields, "`$key` LIKE '%$value%'" );
+                            if ( is_array( $value ) ) {
+                                $filter = array();
+                                foreach ( $value as $item ) {
+                                    array_push( $filter, "`$key` LIKE '%$item%'" );
+                                }
+                                $entry = "(".join( " OR ", $filter ).")";
+                                array_push( $fields, $entry );
+                            } else {
+                                array_push( $fields, "`$key` LIKE '%$value%'" );
+                            }
                             break;
 
                         case 'dateStart':
-                            array_push( $fields, '`timestamp` >= $value' );
+                            array_push( $fields, '`timestamp` >= '.$value );
                             break;
 
                         case 'dateEnd':
-                            array_push( $fields, '`timestamp` <= $value' );
+                            array_push( $fields, '`timestamp` <= '.$value );
                             break;
 
                         case 'match':
                         case 'query':
+                        case 'resultsPerPage':
                             break;
                         }
                     }
-                    $sql = 'SELECT * FROM ('.join( ' UNION ALL ', $tables ).') a WHERE '.join( $match, $fields ).' ORDER BY `timestamp` DESC LIMIT '.$limit;
+                    $sql = 'SELECT * FROM ('.join( ' UNION ALL ', $tables ).') a WHERE '.join( $match, $fields ).' ORDER BY `timestamp` DESC';
                     $statement = $this->_db->prepare( $sql );
                     $statement->execute();
                     $results = $statement->fetchAll( PDO::FETCH_ASSOC );

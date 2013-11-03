@@ -109,7 +109,8 @@ Ember.Handlebars.helper('result-pagination', function(pages) {
 	return new Handlebars.SafeString(div.html());
 });
 
-Ember.Handlebars.helper('add-search-filter', function(filter) {
+//Handlebars.registerBoundHelper('add-search-filter', function(filter, options) {
+Ember.Handlebars.helper('label-for', function(filter) {
 	var div = jQuery('<div/>');
 
 	jQuery('<label/ > ', {
@@ -117,33 +118,39 @@ Ember.Handlebars.helper('add-search-filter', function(filter) {
 		class: "col-sm-2 control-label"
 	}).html(filter.name).css('width', '170px').css('marginRight', '10px').css('textAlign', 'right').appendTo(div);
 
+	return new Handlebars.SafeString(div.html());
+
 	if (filter.id === "dateStart" || filter.id === "dateEnd") {
 		jQuery('<input/>', {
 			class: "form-control init-date-picker",
 			placeholder: filter.name,
 			type: 'text',
-			name: filter.id
+			name: filter.id,
+			value: filter.val
 		}).css('width', '500px').appendTo(div);
 	} else if (filter.id === "additional_arguments") {
 		jQuery('<input/>', {
 			class: "form-control",
 			placeholder: 'Argument Key',
 			type: 'text',
-			name: filter.id + "_key"
+			name: filter.id + "_key",
+			value: filter.key
 		}).css('width', '245px').css('marginRight', '10px').appendTo(div);
 
 		jQuery('<input/>', {
 			class: "form-control",
 			placeholder: "Argument Value",
 			type: "text",
-			name: filter.id + "_value"
+			name: filter.id + "_value",
+			value: filter.val
 		}).css('width', '245px').appendTo(div);
 	} else {
 		jQuery('<input/>', {
 			class: "form-control",
 			placeholder: filter.name,
 			type: 'text',
-			name: filter.id
+			name: filter.id,
+			value: filter.val
 		}).css('width', '500px').appendTo(div);
 	}
 

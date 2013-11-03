@@ -42,6 +42,6 @@ if ($_GET['query']) {
     $response['errors'] = array('Missing required "query" parameter.');
 }
 
-echo json_encode($response);
+echo json_encode($response, JSON_PRETTY_PRINT);
 
 ?>

@@ -216,8 +216,22 @@ if (isset($HTTP_RAW_POST_DATA)) {
                 <form id="detailedSearchParams" class="form-inline" role="form" style="margin-bottom: 15px" action="/results" method="GET">
                     {{#each this}}
                         <div class="form-group filter-row">
-                            {{add-search-filter this}}
-                            <button type="button" class="btn btn-danger" style="margin-left: 10px" {{action "removeFilter" this}}>Remove Filter</button>
+                            <label class="col-sm-2 control-label" style="width: 170px; text-align: right; margin-top: 8px;">{{name}}</label>
+                            {{#if additional_arguments}}
+                                {{input value=key class="form-control form-argument-field" placeholder="Argument Key" type="text" name=name_key}}
+                                {{input value=val class="form-control form-argument-field" placeholder="Argument Value" type="text" name=name_val}}
+                            {{else}}
+                                {{#if dateStart}}
+                                    {{input value=val class="form-control form-field init-date-picker" placeholder="Date Start" type="text" name=id}}
+                                {{else}}
+                                    {{#if dateEnd}}
+                                        {{input value=val class="form-control form-field init-date-picker" placeholder="Date End" type="text" name=id}}
+                                    {{else}}
+                                        {{input value=val class="form-control form-field" placeholder=name type="text" name=id}}
+                                    {{/if}}
+                                {{/if}}
+                            {{/if}}
+                            <button type="button" class="btn btn-danger" {{action "removeFilter" this}}>Remove Filter</button>                        
                         </div>
                     {{/each}}
                 </form>
@@ -236,6 +250,72 @@ if (isset($HTTP_RAW_POST_DATA)) {
                 <button type="button" class="btn btn-success" {{action "submitSearch"}}>Search</button>
             </div>
         </div>
+    </script>
+
+    <script type="text/x-handlebars" id="detailedSearchResults" data-template-name="detailedSearchResults">
+        <div class="panel panel-default" style="margin-top: 25px">
+            <div class="panel-body">
+                <h1 style="margin:0px;">Search Results</h1>
+                <p>{{#link-to 'detailedSearch'}}Modify your search{{/link-to}}.</p>
+            </div>
+            <div class="list-group">
+                {{#if data.length}}
+                    {{#each data}}
+                        {{#link-to 'event' this classNames="list-group-item"}}
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout:fixed;">
+                                <tr>
+                                    <td style="width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: top;">
+                                        <h3 style="font-size: 18px; margin: 0px;">
+                                            {{event-color event}}
+                                        </h3>
+                                        {{#if timestamp}}
+                                            <p style="font-size: 10px; margin: 0px; color: #AAA;">{{format-date timestamp}}</p>
+                                        {{/if}}
+                                        {{#if subject}}
+                                            <i><p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px; font-weight: bold;">{{subject}}</p></i>
+                                        {{/if}}
+                                        {{#if email}}
+                                            <p class="truncate" style="font-size: 14px; margin: 0px;">{{email}}</p>
+                                        {{/if}}
+                                        {{#if url}}
+                                            <p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{url}}</p>
+                                        {{/if}}
+                                    </td>
+                                    <td style="width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: top;">
+                                        {{#if category}}
+                                            <p style="margin: 0px; font-weight: bold">Categories:</p>
+                                            <ul>
+                                                {{#each category}}
+                                                    <li>{{this}}</li>
+                                                {{/each}}
+                                            </ul>
+                                        {{/if}}
+                                        {{#if additional_arguments}}
+                                            <p style="margin: 0px; font-weight: bold;">Additional Arguments</p>
+                                            {{list-additional-arguments additional_arguments}}
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            </table>
+                        {{/link-to}}
+                    {{/each}}
+                {{else}}
+                    <div class="list-group-item">
+                        <h3 style="font-size: 18px; margin: 0px;">
+                            No results.
+                        </h3>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+        {{#if data.length}}
+            <div style="text-align: center; margin: auto;">
+                <ul class="pagination">
+                    {{result-pagination pages}}
+                </ul>
+            </div>
+        {{/if}}
+        <h1>&nbsp;</h1>
     </script>
 
     <!--

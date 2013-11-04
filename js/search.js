@@ -24,6 +24,17 @@ App.SearchRoute = Ember.Route.extend({
 			response.data = allResults.slice(((page - 1) * resultsPerPage), (page * resultsPerPage));
 			controller.set('model', response);
 		});
+	},
+
+	actions: {
+		downloadCSV: function() {
+			var params = {
+				text: decodeURIComponent(this.get('controller.model.query')),
+				query: 'wildcard',
+				csv: true
+			};
+			window.location = "api/search.php?" + $.param(params);
+		}
 	}
 });
 

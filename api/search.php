@@ -41,6 +41,9 @@ if ( array_key_exists( "query", $_GET ) ) {
 }
 
 if ( array_key_exists( "csv", $_GET ) and count( $response['data'] ) > 0 ) {
+    header( "Content-type: text/csv" );
+    header( "Content-Disposition: attachment; filename=Export.csv" );
+    
     $outstream = fopen( "php://output", 'w' );
     $headers = array();
     foreach ( $response['data'][0] as $key => $value ) {
@@ -70,10 +73,6 @@ if ( array_key_exists( "csv", $_GET ) and count( $response['data'] ) > 0 ) {
         fputcsv( $outstream, $flattened );
     }
 
-    header( "Content-type: text/csv" );
-    header( "Content-Disposition: attachment; filename=file.csv" );
-    header( "Pragma: no-cache" );
-    header( "Expires: 0" );
     fclose( $outstream );
 } else {
     header( "Content-type: application/json" );

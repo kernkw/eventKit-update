@@ -147,6 +147,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
                 <h1 style="margin:0px;">Search Results</h1>
                 <p style="margin:0px; color: #888; font-size: 14px;">For "{{query}}"</p>
                 <p>Go to the {{#link-to 'detailedSearch'}}Detailed Search{{/link-to}} to add filters to your search.</p>
+                <p><a href="#" {{action "downloadCSV"}}>Download as CSV</a></p>
             </div>
             <div class="list-group">
                 {{#if data.length}}

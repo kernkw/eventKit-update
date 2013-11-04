@@ -537,6 +537,7 @@ class DatabaseController {
                         case 'match':
                         case 'query':
                         case 'resultsPerPage':
+                        case 'csv':
                             break;
                         }
                     }

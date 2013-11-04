@@ -257,6 +257,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
             <div class="panel-body">
                 <h1 style="margin:0px;">Search Results</h1>
                 <p>{{#link-to 'detailedSearch'}}Modify your search{{/link-to}}.</p>
+                <p><a href="#" {{action "downloadCSV"}}>Download as CSV</a></p>
             </div>
             <div class="list-group">
                 {{#if data.length}}

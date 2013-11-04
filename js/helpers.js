@@ -119,40 +119,14 @@ Ember.Handlebars.helper('label-for', function(filter) {
 	}).html(filter.name).css('width', '170px').css('marginRight', '10px').css('textAlign', 'right').appendTo(div);
 
 	return new Handlebars.SafeString(div.html());
+});
 
-	if (filter.id === "dateStart" || filter.id === "dateEnd") {
-		jQuery('<input/>', {
-			class: "form-control init-date-picker",
-			placeholder: filter.name,
-			type: 'text',
-			name: filter.id,
-			value: filter.val
-		}).css('width', '500px').appendTo(div);
-	} else if (filter.id === "additional_arguments") {
-		jQuery('<input/>', {
-			class: "form-control",
-			placeholder: 'Argument Key',
-			type: 'text',
-			name: filter.id + "_key",
-			value: filter.key
-		}).css('width', '245px').css('marginRight', '10px').appendTo(div);
+Ember.Handlebars.helper('download-csv', function(url) {
+	var div = jQuery('<div/>');
 
-		jQuery('<input/>', {
-			class: "form-control",
-			placeholder: "Argument Value",
-			type: "text",
-			name: filter.id + "_value",
-			value: filter.val
-		}).css('width', '245px').appendTo(div);
-	} else {
-		jQuery('<input/>', {
-			class: "form-control",
-			placeholder: filter.name,
-			type: 'text',
-			name: filter.id,
-			value: filter.val
-		}).css('width', '500px').appendTo(div);
-	}
+	jQuery('<a/>', {
+		href: url
+	}).html('Download as CSV').appendTo(div);
 
 	return new Handlebars.SafeString(div.html());
 });

@@ -58,6 +58,14 @@ App.DetailedSearchResultsRoute = Ember.Route.extend({
 			response.data = allResults.slice(((page - 1) * resultsPerPage), (page * resultsPerPage));
 			controller.set('model', response);
 		});
+	},
+
+	actions: {
+		downloadCSV: function() {
+			var params = JSON.parse(decodeURIComponent(this.get('controller.model.query')));
+			params.csv = true;
+			window.location = "api/search.php?" + $.param(params);
+		}
 	}
 });
 
@@ -181,6 +189,7 @@ App.DetailedSearchController = Ember.ArrayController.extend({
 		return availableParams;
 	}.property()
 });
+
 
 /* MODELS
  *=========================================================================*/

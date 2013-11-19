@@ -12,6 +12,13 @@
 
 App.EventController = Ember.ObjectController.extend({
 	modelDidChange: function() {
+		var self = this;
+
+		if (!$("#related-group").length) setTimeout(function() {
+			self.modelDidChange();
+			return;
+		}, 100);
+
 		// FIND ANY RELATED POSTS BY SMTP-ID
 		var smtpid = this.get('model.smtpid'),
 			event = this.get('model.event'),
@@ -24,8 +31,7 @@ App.EventController = Ember.ObjectController.extend({
 				match: 'all',
 				smtpid: smtpid,
 				email: email
-			},
-				self = this;
+			};
 			Ember.$.getJSON('api/search.php?' + $.param(related)).then(function(events) {
 				if (events.data && events.data.length > 1) {
 					$("#related-group").html('');
@@ -52,6 +58,8 @@ App.EventController = Ember.ObjectController.extend({
 		}
 
 		// IF THIS IS A DROP, ADD A MORE DESCRIPTIVE REASON FOR THE DROP
+		var dropReason = $("#drop-reason");
+		dropReason.html('').css('display', 'none');
 		if (event === 'dropped') {
 			var descriptions = {
 				bounce: "This email was dropped because \"__EMAIL__\" is on your bounce list.  To continue sending to this address, go to <a href=\"http://sendgrid.com/bounces\">http://sendgrid.com/bounces</a> and delete it from the list.",
@@ -68,7 +76,8 @@ App.EventController = Ember.ObjectController.extend({
 				}
 			}
 			if (reason) {
-				jQuery('<p/>').html(reason).appendTo("#event-info-body");
+				dropReason.css('display', 'block');
+				jQuery('<p/>').html(reason).appendTo(dropReason);
 			}
 		}
 	}.observes('model')

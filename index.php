@@ -426,6 +426,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
                                 <p><b>Additional Arguments</b></p>
                                 {{list-additional-arguments additional_arguments}}
                             {{/if}}
+                            <span id="drop-reason"></span>
                         </div>
                     </div>
                 </td>

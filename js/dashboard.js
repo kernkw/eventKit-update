@@ -11,17 +11,9 @@
 /* ROUTES
  *=========================================================================*/
 
-App.RecentRoute = Ember.Route.extend({
+App.DashboardRoute = Ember.Route.extend({
 	model: function() {
-		var call = Ember.$.getJSON('api/search.php?query=recent&limit=10');
-		return call;
-	}
-});
-
-App.TotalsRoute = Ember.Route.extend({
-	model: function() {
-		var call = Ember.$.getJSON('api/search.php?query=total&hours=24');
-		return call;
+		return Ember.$.getJSON('api/search.php?query=dashboard');//recent&limit=10');
 	}
 });
 

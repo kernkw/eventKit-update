@@ -69,7 +69,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
         </div
     </script>
     
-    <script type="text/x-handlebars" id="dashboard" charset="utf-8">
+    <script type="text/x-handlebars" id="dashboard" data-template-name="dashboard">
         <h1 class="outer-text">Dashboard</h1>
         <p class="outer-text">Welcome to the SendGrid Event Webhook Starter Kit. Use the search box below to start searching your logs.</p>
         <div class="panel panel-default" style="margin-top: 25px">
@@ -82,57 +82,49 @@ if (isset($HTTP_RAW_POST_DATA)) {
         
         <table border="0" cellspacing="0" cellpadding="0" style="width: 100%; table-layout:fixed;">
             <tr>
-                {{outlet}}
+                <td style="width: 415px; vertical-align: top;">
+                    <div class="panel panel-info" style="margin-top: 25px;">
+                        <div class="panel-heading">
+                            Most Recent Events
+                        </div>
+                        <div class="list-group" style="overflow-y: auto; height: 275px;">
+                            {{#if model.recent.length}}
+                                {{#each model.recent}}
+                                    {{#link-to 'event' this classNames="list-group-item"}}
+                                        <h3 style="font-size: 18px; margin: 0px;">
+                                            {{event-color event}}
+                                        </h3>
+                                        <p style="font-size: 10px; margin: 0px; color: #AAA;">{{format-date timestamp}}</p>
+                                        <p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{email}}</p>
+                                    {{/link-to}}
+                                {{/each}}
+                            {{else}}
+                                <span href="#" class="list-group-item">
+                                    <h3 style="font-size: 18px; margin-top: 1em; margin-bottom: 1em;">
+                                        No recent events.
+                                    </h3>
+                                </span>
+                            {{/if}}
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 40px"></td>
+                <td style="width: 415px; vertical-align: top;">
+                    <div class="panel panel-info" style="margin-top: 25px">
+                        <div class="panel-heading">
+                            Total Events Today
+                        </div>
+                        <div class="panel-body" style="overflow-y: auto; height: 275px;">
+                            <span style="text-align: center">
+                                <h1 style="font-size: 72px; margin-top: 50px; margin-bottom: 0px;">{{model.totals}}</h1>
+                                <h3>{{plural-event model.totals}}</h3>
+                            </span>
+                        </div>
+                    </div>
+                </td>
             </tr>
         </table>
         <h1>&nbsp;</h1>
-    </script>
-
-    <script type="text/x-handlebars" id="recent" data-template-name="recent">
-        <td style="width: 415px; vertical-align: top;">
-            <div class="panel panel-info" style="margin-top: 25px;">
-                <div class="panel-heading">
-                    Most Recent Events
-                </div>
-                <div class="list-group" style="overflow-y: auto; height: 275px;">
-                    {{#if data.length}}
-                        {{#each data}}
-                            {{#link-to 'event' this classNames="list-group-item"}}
-                                <h3 style="font-size: 18px; margin: 0px;">
-                                    {{event-color event}}
-                                </h3>
-                                <p style="font-size: 10px; margin: 0px; color: #AAA;">{{format-date timestamp}}</p>
-                                <p class="truncate" style="font-size: 14px; margin-top: 5px; margin-bottom: 0px;">{{email}}</p>
-                            {{/link-to}}
-                        {{/each}}
-                    {{else}}
-                        <span href="#" class="list-group-item">
-                            <h3 style="font-size: 18px; margin-top: 1em; margin-bottom: 1em;">
-                                No recent events.
-                            </h3>
-                        </span>
-                    {{/if}}
-                </div>
-            </div>
-        </td>
-        <td style="width: 40px"></td>
-        <td style="width: 415px; vertical-align: top;">
-            {{outlet}}
-        </td>
-    </script>
-
-    <script type="text/x-handlebars" id="totals" data-template-name="totals">
-        <div class="panel panel-info" style="margin-top: 25px">
-            <div class="panel-heading">
-                Total Events Today
-            </div>
-            <div class="panel-body" style="overflow-y: auto; height: 275px;">
-                <span style="text-align: center">
-                    <h1 style="font-size: 72px; margin-top: 50px; margin-bottom: 0px;">{{data}}</h1>
-                    <h3>{{plural-event data}}</h3>
-                </span>
-            </div>
-        </div>
     </script>
 
 
@@ -447,6 +439,11 @@ if (isset($HTTP_RAW_POST_DATA)) {
                             Related events are determined by the SMTP-ID of the message. Keep in mind that not all events have an SMTP-ID (such as opens and clicks), so you might not see all the related events listed below.
                         </div>
                         <div class="list-group" style="overflow-y: auto;" id="related-group">
+                            <span href="#" class="list-group-item">
+                                <h3 style="font-size: 18px; margin-top: 1em; margin-bottom: 1em;">
+                                    No related events found.
+                                </h3>
+                            </span>
                         </div>
                     </div>
                 </td>

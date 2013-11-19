@@ -15,14 +15,6 @@ App.Router.map(function() {
 	// DASHBOARD
 	this.resource('dashboard', {
 		path: "/"
-	}, function() {
-		this.resource('recent', {
-			path: "/"
-		}, function() {
-			this.resource('totals', {
-				path: "/"
-			});
-		});
 	});
 
 	// SEARCH

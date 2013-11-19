@@ -21,7 +21,18 @@ $response = array();
 // CHECK IF THE QUERY PARAMETER IS SET
 if ( array_key_exists( "query", $_GET ) ) {
     $response['message'] = 'success';
-    $response['data'] = $db->processQuery( $_GET );
+    if ( isset( $_GET['query'] ) and $_GET['query'] === 'dashboard' ) {
+        $response['recent'] = $db->processQuery( array(
+                'query' => 'recent',
+                'limit' => 10
+            ) );
+        $response['totals'] = $db->processQuery( array(
+                'query' => 'total',
+                'hours' => 24
+            ) );
+    } else {
+        $response['data'] = $db->processQuery( $_GET );
+    }
 
     if ( array_key_exists( "resultsPerPage", $_GET ) ) {
         $resultsPerPage = $_GET["resultsPerPage"];
@@ -43,11 +54,11 @@ if ( array_key_exists( "query", $_GET ) ) {
 if ( array_key_exists( "csv", $_GET ) and count( $response['data'] ) > 0 ) {
     header( "Content-type: text/csv" );
     header( "Content-Disposition: attachment; filename=Export.csv" );
-    
+
     $outstream = fopen( "php://output", 'w' );
     $headers = array();
     foreach ( $response['data'][0] as $key => $value ) {
-        if ($key === 'raw' or $key === 'uid') continue;
+        if ( $key === 'raw' or $key === 'uid' ) continue;
         array_push( $headers, $key );
     }
 
@@ -59,15 +70,15 @@ if ( array_key_exists( "csv", $_GET ) and count( $response['data'] ) > 0 ) {
             $insert = $value;
             if ( $key === 'category' ) {
                 $insert = join( ",", $value );
-            } else if ($key === 'newsletter' or $key === 'additional_arguments') {
-                $key_value_string = array();
-                foreach($value as $sub_key => $sub_value) {
-                    array_push($key_value_string, $sub_key.'='.$sub_value);
+            } else if ( $key === 'newsletter' or $key === 'additional_arguments' ) {
+                    $key_value_string = array();
+                    foreach ( $value as $sub_key => $sub_value ) {
+                        array_push( $key_value_string, $sub_key.'='.$sub_value );
+                    }
+                    $insert = join( ",", $key_value_string );
+                } else if ( $key === 'raw' or $key === 'uid' ) {
+                    continue;
                 }
-                $insert = join(",", $key_value_string);
-            } else if ($key === 'raw' or $key === 'uid') {
-                continue;
-            }
             $flattened[$key] = $insert;
         }
         fputcsv( $outstream, $flattened );

@@ -13,6 +13,31 @@
 
  ==========================================================================*/
  
+
+$unzip_failed = false;
+$directory_writable = true;
+
+//$installerURL = "http://localhost/event_webhook_starter_kit/eventkit.zip";
+$installerURL = "http://teambetterwithbeer.com/eventkit/eventkit.zip";
+if ( is_writable( dirname( __FILE__ ) ) ) {
+    $file = "eventkit.zip";
+	file_put_contents($file, fopen($installerURL, 'r'));
+	
+	$zip = new ZipArchive;
+    $res = $zip->open($file);
+    if ($res === TRUE) {
+        $zip->extractTo(dirname(__FILE__));
+        $zip->close();
+        chmod("eventkit", 0777);
+        file_put_contents('eventkit/Constants.php', "");
+        header("Location: eventkit/Installer.php");
+        die();
+    } else {
+    	$unzip_failed = true;
+    }
+} else {
+	$directory_writable = false;
+}
  ?>
 
  <html>
@@ -39,26 +64,9 @@
  	<div id="container">
 
 <?php
-$folder = "eventkit";
-if (file_exists($folder) and is_dir($folder)) {
-    header("Location: eventkit/index.php");
-    die();
-}
 
-$installerURL = "http://localhost/event_webhook_starter_kit/eventkit.zip";
-if ( is_writable( dirname( __FILE__ ) ) ) {
-    $file = "eventkit.zip";
-	file_put_contents($file, fopen($installerURL, 'r'));
-	
-	$zip = new ZipArchive;
-    $res = $zip->open($file);
-    if ($res === TRUE) {
-        $zip->extractTo(dirname(__FILE__));
-        $zip->close();
-        chmod("eventkit", 0777);
-        header("Location: eventkit/Installer.php");
-        die();
-    } else {
+if ($unzip_failed) {
+
 ?>
 
 <div class="panel panel-default">
@@ -71,8 +79,7 @@ if ( is_writable( dirname( __FILE__ ) ) ) {
 </div>
 
 <?php
-    }
-} else {
+} else if (!$directory_writable) {
 ?>
 		<div class="panel panel-default">
 			<div class="panel-heading">

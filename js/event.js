@@ -16,10 +16,7 @@ App.EventController = Ember.ObjectController.extend({
 		var smtpid = this.get('model.smtpid'),
 			event = this.get('model.event'),
 			reason = this.get('model.reason'),
-			email = this.get('model.email'),
-			group = $("#related-group"),
-			noResults = '<span href="#" class="list-group-item"><h3 style="font-size: 18px; margin-top: 1em; margin-bottom: 1em;">No related events found.</h3></span>';
-		group.html('');
+			email = this.get('model.email');
 
 		if (smtpid) {
 			var related = {
@@ -30,8 +27,8 @@ App.EventController = Ember.ObjectController.extend({
 			},
 				self = this;
 			Ember.$.getJSON('api/search.php?' + $.param(related)).then(function(events) {
-
 				if (events.data && events.data.length > 1) {
+					$("#related-group").html('');
 					events.data.forEach(function(value, i, array) {
 						var eventName = formatEventWithColor(value.event);
 
@@ -40,7 +37,7 @@ App.EventController = Ember.ObjectController.extend({
 						var a = jQuery('<a/>', {
 							href: '#/event/' + value.uid,
 							class: 'list-group-item'
-						}).appendTo(group);
+						}).appendTo("#related-group");
 
 						jQuery('<h3/>', {
 							style: 'font-size: 18px; margin: 0px;'
@@ -50,12 +47,8 @@ App.EventController = Ember.ObjectController.extend({
 							style: "font-size: 10px; margin: 0px; color: #AAA;"
 						}).html(formatDateToLocal(value.timestamp)).appendTo(a);
 					});
-				} else {
-					group.html(noResults);
 				}
 			});
-		} else {
-			group.html(noResults);
 		}
 
 		// IF THIS IS A DROP, ADD A MORE DESCRIPTIVE REASON FOR THE DROP
@@ -83,16 +76,20 @@ App.EventController = Ember.ObjectController.extend({
 });
 
 App.EventRoute = Ember.Route.extend({
-	setupController: function(controller, model) {
-		var uid = model.uid,
+	model: function(params) {
+		var uid = params.uid,
 			searchParams = {
 				query: 'detailed',
 				match: 'all',
 				uid: uid
 			};
 
-		Ember.$.getJSON('api/search.php?' + $.param(searchParams)).then(function(response) {
-			controller.set('model', response.data[0]);
+		return Ember.$.getJSON('api/search.php?' + $.param(searchParams)).then(function(results) {
+			if (results.data.length) {
+				return results.data[0];
+			} else {
+				return [];
+			}
 		});
 	}
 });

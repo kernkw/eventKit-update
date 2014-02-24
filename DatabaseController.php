@@ -567,6 +567,33 @@ class DatabaseController {
                 $response = $this->_decodeAllJson( $results );
                 break;
 
+                // EMAIL_STATS
+                // Gets the total counts for each event for a specific email.
+            case 'email_stats':
+                $schema = DatabaseController::$schemas;
+                $sql = array();
+                $events = array();
+                $response = array();
+                foreach ( $schema as $key => $value ) {
+                    $select = 'SELECT COUNT(`email`) AS count FROM '.$key.' WHERE `email`="'.$params['email'].'"';
+                    array_push( $sql, $select );
+                    array_push( $events, $key );
+                }
+                $all = join( " UNION ALL ", $sql ).";";
+                $statement = $this->_db->prepare( join( " UNION ALL ", $sql ) );
+                $statement->execute();
+                $results = $statement->fetchAll( PDO::FETCH_ASSOC );
+
+                foreach( $events as $index => $event) {
+                    $response[$event] = $results[$index]["count"] * 1;
+                }
+
+                $response['delivery_rate'] = round(($response['delivered'] / $response['processed']) * 100);
+                $response['open_rate'] = round(($response['open'] / $response['delivered']) * 100);
+                $response['click_rate'] = round(($response['click'] / $response['delivered']) * 100);
+
+                break;
+
                 // DETAILED SEARCH
                 // Performs a search with multiple parameters. The only required
                 // parameter is `match`, which specifies if all of the search

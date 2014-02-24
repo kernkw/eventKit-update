@@ -35,6 +35,11 @@ App.Router.map(function() {
 	this.resource('event', {
 		path: "/event/:uid"
 	});
+
+	//EMAIL INSPECTOR
+	this.resource('email', {
+		path: "/email/:email_id"
+	});
 });
 
 App.ApplicationController = Ember.Controller.extend({

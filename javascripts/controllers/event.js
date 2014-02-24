@@ -14,10 +14,12 @@ App.EventController = Ember.ObjectController.extend({
 	modelDidChange: function() {
 		var self = this;
 
-		if (!$("#related-group").length) setTimeout(function() {
-			self.modelDidChange();
+		if (!$("#related-group").length) {
+			setTimeout(function() {
+				self.modelDidChange();
+			}, 100);
 			return;
-		}, 100);
+		}
 
 		// FIND ANY RELATED POSTS BY SMTP-ID
 		var smtpid = this.get('model.smtpid'),

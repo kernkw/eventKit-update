@@ -33,11 +33,8 @@ if (isset($HTTP_RAW_POST_DATA)) {
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="css/datepicker.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/master.css">
+    <link rel="stylesheet" href="assets/vendor/css/vendor.css">
+    <link rel="stylesheet" href="assets/application/css/application.css">
 </head>
 <body>
 
@@ -324,7 +321,9 @@ if (isset($HTTP_RAW_POST_DATA)) {
                 <h2 style="font-size: 22px; margin-bottom: 0px;">{{event-color event}}</h2>
             {{/if}}
             {{#if email}}
-                <h2 style="font-size: 18px; margin: 0px;">{{email}}</h2>
+                {{#link-to 'email' email}}
+                    <span style="font-size: 18px; margin: 0px; font-weight: bold;">{{email}}</span>
+                {{/link-to}}
             {{/if}}
         </span>
         <table border="0" cellspacing="0" cellpadding="0" style="width: 100%; table-layout:fixed;">
@@ -452,17 +451,75 @@ if (isset($HTTP_RAW_POST_DATA)) {
         </table>
     </script>
 
+    <!--
+    *
+    * EMAIL INSPECTOR PAGE
+    *
+    *****************************************************-->
+    <script type="text/x-handlebars" id="email">
+        <span class="outer-text">
+            <h1>Email Details</h1>
+            {{#if email}}
+                <h2 style="font-size: 18px; margin-top: 0px; font-weight: bold;">{{email}}</h2>
+            {{/if}}
+        </span>
+        <table border="0" style="width: 100%;">
+            <tr>
+                <td style="width:25%; padding: 5px;">
+                    <div class="panel panel-info">
+                        <div class="panel-heading" style="text-align: center;">
+                            Processed Events
+                        </div>
+                        <div class="panel-body" style="overflow-y: auto; height: 150px;">
+                            <span style="text-align: center">
+                                <h1 style="font-size: 72px; margin-top: 15px; margin-bottom: 0px;">{{data.processed}}</h1>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td style="width:25%; padding: 5px;">
+                    <div class="panel panel-info">
+                        <div class="panel-heading" style="text-align: center;">
+                            Delivery Rate
+                        </div>
+                        <div class="panel-body" style="overflow-y: auto; height: 150px;">
+                            <span style="text-align: center">
+                                <h1 style="font-size: 72px; margin-top: 15px; margin-bottom: 0px;">{{data.delivery_rate}}<span style="font-size: 32px">%</span></h1>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td style="width:25%; padding: 5px;">
+                    <div class="panel panel-info">
+                        <div class="panel-heading" style="text-align: center;">
+                            Open Rate
+                        </div>
+                        <div class="panel-body" style="overflow-y: auto; height: 150px;">
+                            <span style="text-align: center">
+                                <h1 style="font-size: 72px; margin-top: 15px; margin-bottom: 0px;">{{data.open_rate}}<span style="font-size: 32px">%</span></h1>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td style="width:25%; padding: 5px;">
+                    <div class="panel panel-info">
+                        <div class="panel-heading" style="text-align: center;">
+                            Click Rate
+                        </div>
+                        <div class="panel-body" style="overflow-y: auto; height: 150px;">
+                            <span style="text-align: center">
+                                <h1 style="font-size: 72px; margin-top: 15px; margin-bottom: 0px;">{{data.click_rate}}<span style="font-size: 32px">%</span></h1>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </script>
+
     <!--EMBER JS-->
-    <script src="js/libs/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script src="js/libs/handlebars-1.0.0.js"></script>
-    <script src="js/libs/ember-1.1.2.js"></script>
-    <script src="js/libs/bootstrap.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/event.js"></script>
-    <script src="js/helpers.js"></script>
+    <script src="assets/vendor/js/vendor.js"></script>
+    <script src="assets/application/js/application.js"></script>
 </body>
 </html>
 

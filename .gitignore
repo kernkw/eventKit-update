@@ -10,3 +10,7 @@ eventkit.zip
 Constants.php
 /logs/*
 /db/*
+/node_modules/*
+/javascripts/views/all_views.js
+/assets/*
+/production/*

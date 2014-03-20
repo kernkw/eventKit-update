@@ -35,7 +35,6 @@ class DatabaseController {
         "sg_message_id" => "TEXT",
         "category" => "TEXT",
         "newsletter" => "TEXT",
-        "subject" => "TEXT",
         "response" => "TEXT",
         "reason" => "TEXT",
         "ip" => "TEXT",

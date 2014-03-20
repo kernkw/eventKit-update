@@ -251,9 +251,6 @@ var searchParams = [],
 		name: "Status",
 		id: "status"
 	}, {
-		name: "Subject",
-		id: "subject"
-	}, {
 		name: "Type",
 		id: "type"
 	}, {

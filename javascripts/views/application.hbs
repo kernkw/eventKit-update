@@ -1,0 +1,19 @@
+<div class="nav">
+    <div class="nav_container">
+        <a href="#">
+            <div class="brand"></div>
+        </a>
+        <div class="search">
+            <div class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    {{input type="text" value=query action="search" class="form-control" placeholder="Search"}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="body">
+    <div class="body_container">
+    {{outlet}}
+    </div>
+</div>

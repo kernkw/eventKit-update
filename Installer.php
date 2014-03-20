@@ -88,7 +88,7 @@ if ( isset( $_POST['username'] ) and isset( $_POST['password'] ) ) {
     // Delete uneeded files
     $parentDir = dirname( dirname( __FILE__ ) );
     unlink( $parentDir.DIRECTORY_SEPARATOR."eventkit.zip" );
-    unlink( $parentDir.DIRECTORY_SEPARATOR."index.php" );
+    //unlink( $parentDir.DIRECTORY_SEPARATOR."index.php" );
 ?>
 
     <div id="container">

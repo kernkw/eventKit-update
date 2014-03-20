@@ -27,239 +27,28 @@ class DatabaseController {
     private $_db = null;
 
     public static $schemas = array(
-        "bounce" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "click" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "deferred" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "delivered" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "dropped" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "open" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "processed" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "spamreport" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "unsubscribe" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        ),
-        "other" => array(
-            "timestamp" => "INT",
-            "event" => "TEXT",
-            "email" => "TEXT",
-            "smtpid" => "TEXT",
-            "sg_event_id" => "TEXT",
-            "sg_message_id" => "TEXT",
-            "category" => "TEXT",
-            "newsletter" => "TEXT",
-            "subject" => "TEXT",
-            "response" => "TEXT",
-            "reason" => "TEXT",
-            "ip" => "TEXT",
-            "useragent" => "TEXT",
-            "attempt" => "TEXT",
-            "status" => "TEXT",
-            "type" => "TEXT",
-            "url" => "TEXT",
-            "additional_arguments" => "TEXT",
-            "event_post_timestamp" => "INT",
-            "raw" => "TEXT",
-            "uid" => "TEXT"
-        )
+        "timestamp" => "INT",
+        "event" => "TEXT",
+        "email" => "TEXT",
+        "smtpid" => "TEXT",
+        "sg_event_id" => "TEXT",
+        "sg_message_id" => "TEXT",
+        "category" => "TEXT",
+        "newsletter" => "TEXT",
+        "subject" => "TEXT",
+        "response" => "TEXT",
+        "reason" => "TEXT",
+        "ip" => "TEXT",
+        "useragent" => "TEXT",
+        "attempt" => "TEXT",
+        "status" => "TEXT",
+        "type" => "TEXT",
+        "url" => "TEXT",
+        "additional_arguments" => "TEXT",
+        "event_post_timestamp" => "INT",
+        "raw" => "TEXT",
+        "uid" => "INTEGER PRIMARY KEY AUTOINCREMENT"
     );
-
-
 
 
     /*
@@ -335,19 +124,17 @@ class DatabaseController {
             // Each event will have their own table, so first we need to
             // organize the events and all the columns their tables will
             // have.
-            $events = DatabaseController::$schemas;
+            $columns = DatabaseController::$schemas;
 
             // CYCLE THROUGH EACH EVENT AND CREATE THE TABLE
-            foreach ( $events as $key => $event ) {
-                $table_columns = "";
-                foreach ( $event as $column => $type ) {
-                    if ( strlen( $table_columns ) > 0 ) $table_columns .= ",\n";
-                    $table_columns .= "`$column` $type";
-                }
-                $create_table = "CREATE TABLE IF NOT EXISTS `$key` (\n$table_columns\n);";
-                $file_db->exec( $create_table );
-                Logger::logSystem( "Created table \"$key\" in the database." );
+            $table_columns = "";
+            foreach ( $columns as $column => $type ) {
+                if ( strlen( $table_columns ) > 0 ) $table_columns .= ",\n";
+                $table_columns .= "`$column` $type";
             }
+            $create_table = "CREATE TABLE IF NOT EXISTS `events` (\n$table_columns\n);";
+            $file_db->exec( $create_table );
+            Logger::logSystem( "Created table \"events\" in the database." );
         } catch( Exception $e ) {
             // LOG THE ERROR
             Logger::logError( "An error occurred while creating a new database: ".$e->getMessage() );
@@ -426,21 +213,14 @@ class DatabaseController {
             return false;
         }
 
-        $event = $notification["event"];
-
         // GRAB THE SCHEMA FOR THE EVENT
-        // If for some reason a schema doesn't exist for the given event, grab
-        // the generic "other" schema which contains columns for every possible
-        // parameter.
-        $schema = self::$schemas["other"];
-        if ( array_key_exists( $event, self::$schemas ) ) $schema = self::$schemas[$event];
-        else Logger::logError( "Couldn't find a schema for event type \"$event\". Using generic \"other\" schema." );
+        // This will give us all the columns in the table.
+        $schema = self::$schemas;
 
         // ARRAY FOR INSERTING INTO TABLE
         // This is the array we'll use to add data to the database. It
         // follows the schema of the target table.
         $table_values = array(
-            "uid" => md5( uniqid() ),
             "event_post_timestamp" => time(),
             "raw" => json_encode( $notification )
         );
@@ -480,6 +260,8 @@ class DatabaseController {
         $values = "";
         $bindings = array();
         foreach ( $table_values as $column => $value ) {
+            if ( $column == "uid" ) continue;
+
             $bindings[":$column"] = $value;
 
             if ( strlen( $columns ) ) $columns .= ", ";
@@ -488,7 +270,7 @@ class DatabaseController {
             if ( strlen( $values ) ) $values .= ", ";
             $values .= ":$column";
         }
-        $sql = "INSERT INTO `$event` ($columns) VALUES ($values)";
+        $sql = "INSERT INTO `events` ($columns) VALUES ($values)";
 
         // EXECUTE THE SQL STATEMENT
         // Run the command and add the data into the database.
@@ -524,10 +306,6 @@ class DatabaseController {
         $response = array();
 
         if ( array_key_exists( 'query', $params ) ) {
-            $tables = array();
-            foreach ( self::$schemas as $key => $value ) {
-                array_push( $tables, 'SELECT * FROM '.$key );
-            }
 
             switch ( $params['query'] ) {
                 // RECENT
@@ -536,7 +314,7 @@ class DatabaseController {
                 // it defaults to 5.
             case 'recent':
                 $limit = isset( $params['limit'] ) ? $params['limit'] : 5;
-                $sql = 'SELECT * FROM ('.join( ' UNION ALL ', $tables ).') a ORDER BY `timestamp` DESC LIMIT '.$limit;
+                $sql = 'SELECT * FROM `events` ORDER BY `timestamp` DESC LIMIT '.$limit;
                 $statement = $this->_db->prepare( $sql );
                 $statement->execute();
                 $results = $statement->fetchAll( PDO::FETCH_ASSOC );
@@ -549,7 +327,7 @@ class DatabaseController {
                 // defined, then it'll default to 24 hours.
             case 'total':
                 $hours = isset( $params['hours'] ) ? $params['hours'] : 24;
-                $sql = 'SELECT COUNT(*) FROM ('.join( ' UNION ALL ', $tables ).') a WHERE `event_post_timestamp` > '.( time() - ( $hours * 3600 ) );
+                $sql = 'SELECT COUNT(*) FROM `events` WHERE `event_post_timestamp` > '.( time() - ( $hours * 3600 ) );
                 $statement = $this->_db->prepare( $sql );
                 $statement->execute();
                 $results = $statement->fetchAll( PDO::FETCH_ASSOC );
@@ -560,7 +338,7 @@ class DatabaseController {
                 // Performs a wildcard search for the parameter `text` in the
                 // database.
             case 'wildcard':
-                $sql = 'SELECT * FROM ('.join( ' UNION ALL ', $tables ).') a WHERE `raw` LIKE \'%'.$params['text'].'%\'ORDER BY `timestamp` DESC';
+                $sql = 'SELECT * FROM `events` WHERE `raw` LIKE \'%'.$params['text'].'%\'ORDER BY `timestamp` DESC';
                 $statement = $this->_db->prepare( $sql );
                 $statement->execute();
                 $results = $statement->fetchAll( PDO::FETCH_ASSOC );
@@ -575,7 +353,7 @@ class DatabaseController {
                 $events = array();
                 $response = array();
                 foreach ( $schema as $key => $value ) {
-                    $select = 'SELECT COUNT(`email`) AS count FROM '.$key.' WHERE `email`="'.$params['email'].'"';
+                    $select = 'SELECT COUNT(`email`) AS count FROM `events` WHERE `email`="'.$params['email'].'" AND `event`="'.$params['event'].'"';
                     array_push( $sql, $select );
                     array_push( $events, $key );
                 }
@@ -584,13 +362,13 @@ class DatabaseController {
                 $statement->execute();
                 $results = $statement->fetchAll( PDO::FETCH_ASSOC );
 
-                foreach( $events as $index => $event) {
+                foreach ( $events as $index => $event ) {
                     $response[$event] = $results[$index]["count"] * 1;
                 }
 
-                $response['delivery_rate'] = round(($response['delivered'] / $response['processed']) * 100);
-                $response['open_rate'] = round(($response['open'] / $response['delivered']) * 100);
-                $response['click_rate'] = round(($response['click'] / $response['delivered']) * 100);
+                $response['delivery_rate'] = round( ( $response['delivered'] / $response['processed'] ) * 100 );
+                $response['open_rate'] = round( ( $response['open'] / $response['delivered'] ) * 100 );
+                $response['click_rate'] = round( ( $response['click'] / $response['delivered'] ) * 100 );
 
                 break;
 
@@ -633,7 +411,7 @@ class DatabaseController {
                             break;
                         }
                     }
-                    $sql = 'SELECT * FROM ('.join( ' UNION ALL ', $tables ).') a WHERE '.join( $match, $fields ).' ORDER BY `timestamp` DESC';
+                    $sql = 'SELECT * FROM `events` WHERE '.join( $match, $fields ).' ORDER BY `timestamp` DESC';
                     $statement = $this->_db->prepare( $sql );
                     $statement->execute();
                     $results = $statement->fetchAll( PDO::FETCH_ASSOC );

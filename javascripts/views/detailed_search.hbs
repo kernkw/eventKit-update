@@ -2,7 +2,7 @@
     <div class="panel-body">
         <h1 style="margin:0px;">Narrow Your Search</h1>
         <p style="margin-top: 0px;">Add filters below to narrow down your search:</p>
-        <form id="detailedSearchParams" class="form-inline" role="form" style="margin-bottom: 15px" action="/results" method="GET">
+        <form id="detailedSearchParams" class="form-inline" role="form" style="margin-bottom: 15px" {{action "submitSearch" on="submit"}}>
             {{#each this}}
                 <div class="form-group filter-row">
                     <label class="col-sm-2 control-label" style="width: 170px; text-align: right; margin-top: 8px;">{{name}}</label>

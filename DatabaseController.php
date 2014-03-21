@@ -347,22 +347,29 @@ class DatabaseController {
                 // EMAIL_STATS
                 // Gets the total counts for each event for a specific email.
             case 'email_stats':
-                $schema = DatabaseController::$schemas;
-                $sql = array();
+                $all_events = array(
+                    "delivered",
+                    "processed",
+                    "open",
+                    "click",
+                    "bounce",
+                    "deferred",
+                    "dropped",
+                    "spamreport",
+                    "unsubscribe"
+                );
                 $events = array();
                 $response = array();
-                foreach ( $schema as $key => $value ) {
-                    $select = 'SELECT COUNT(`email`) AS count FROM `events` WHERE `email`="'.$params['email'].'" AND `event`="'.$params['event'].'"';
-                    array_push( $sql, $select );
-                    array_push( $events, $key );
+                foreach ( $all_events as $value ) {
+                    $select = 'SELECT COUNT(*) FROM `events` WHERE `email`="'.$params['email'].'" AND `event`="'.$value.'"';
+                    $statement = $this->_db->prepare( $select );
+                    $statement->execute();
+                    $results = $statement->fetchAll( PDO::FETCH_ASSOC );
+                    $events[$value] = $results[0]['COUNT(*)'];
                 }
-                $all = join( " UNION ALL ", $sql ).";";
-                $statement = $this->_db->prepare( join( " UNION ALL ", $sql ) );
-                $statement->execute();
-                $results = $statement->fetchAll( PDO::FETCH_ASSOC );
 
-                foreach ( $events as $index => $event ) {
-                    $response[$event] = $results[$index]["count"] * 1;
+                foreach ( $events as $event => $count ) {
+                    $response[$event] = $count * 1;
                 }
 
                 $response['delivery_rate'] = round( ( $response['delivered'] / $response['processed'] ) * 100 );
@@ -444,9 +451,11 @@ class DatabaseController {
 
      ==========================================================================*/
     private function isAssociativeArray( $a ) {
-        foreach ( array_keys( $a ) as $key )
+        if ( !is_array( $a ) ) return false;
+        foreach ( array_keys( $a ) as $key ) {
             if ( !is_int( $key ) ) return true;
             return false;
+        }
     }
 
 

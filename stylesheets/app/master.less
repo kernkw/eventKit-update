@@ -3,13 +3,15 @@ body, html {
 }
 
 .brand {
+    @brand_height: 35px;
+    @brand_width: (290.238px / 73.646px) * @brand_height;
     position: absolute;
-    left: 0px;
+    left:15px;
     bottom: 0px;
     top: 0px;
-    width: 180px;
+    width: @brand_width;
     background: url('../../../images/sendgrid-logo.svg') no-repeat center;
-    background-size: 180px 35px;
+    background-size: @brand_width @brand_height;
 }
 
 .nav {
@@ -29,6 +31,8 @@ body, html {
     height: 100%;
     left: 50%;
     margin-left: -450px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .search {

@@ -498,7 +498,7 @@ class DatabaseController {
             // OBJECT IS A STRING - DECODE IT AND RETURN.
             $decoded = json_decode( $object, true, 512 );
             if ( $decoded ) return $decoded;
-            else return str_replace("\\/", "/", $object);
+            else return str_replace( "\\/", "/", $object );
         } else if ( $this->isAssociativeArray( $object ) ) {
                 $new_object = array();
                 foreach ( $object as $key=>$value ) {

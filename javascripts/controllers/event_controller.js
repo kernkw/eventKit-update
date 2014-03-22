@@ -29,7 +29,8 @@ App.EventController = Ember.ObjectController.extend({
 				query: 'detailed',
 				match: 'all',
 				smtpid: smtpid,
-				email: email
+				email: email,
+				resultsPerPage: 1000
 			};
 			Ember.$.getJSON('api/search.php?' + $.param(related)).then(function(events) {
 				if (events.data && events.data.length > 1) {

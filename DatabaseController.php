@@ -105,7 +105,7 @@ class DatabaseController {
                 umask( $oldumask );
             }
 
-            // CREATE THE DATABASE
+            // CREATE THE DATABASE`
             $db_name = uniqid().".db";
             $db_path = join( DIRECTORY_SEPARATOR, array( $db_folder_path, $db_name ) );
             $file_db = new PDO( "sqlite:$db_path" );
@@ -337,7 +337,13 @@ class DatabaseController {
                 // Performs a wildcard search for the parameter `text` in the
                 // database.
             case 'wildcard':
-                $sql = 'SELECT * FROM `events` WHERE `raw` LIKE \'%'.$params['text'].'%\'ORDER BY `timestamp` DESC';
+            case 'wildcard_count':
+                if ( !isset( $params['resultsPerPage'] ) ) $params['resultsPerPage'] = 1;
+                if ( !isset( $params['offset'] ) ) $params['offset'] = 0;
+                $sql = 'SELECT * FROM `events` WHERE `raw` LIKE \'%'.$params['text'].'%\' ORDER BY `timestamp` DESC LIMIT '.$params['resultsPerPage'].' OFFSET '.( ( ( $params['offset'] * 1 ) - 1 ) * $params['resultsPerPage'] );
+                if ( $params['query'] == 'wildcard_count' ) {
+                    $sql = 'SELECT COUNT(*) FROM `events` WHERE `raw` LIKE \'%'.$params['text'].'%\' ORDER BY `timestamp` DESC';
+                }
                 $statement = $this->_db->prepare( $sql );
                 $statement->execute();
                 $results = $statement->fetchAll( PDO::FETCH_ASSOC );
@@ -383,6 +389,7 @@ class DatabaseController {
                 // parameter is `match`, which specifies if all of the search
                 // parameters have to be met, or any of them.
             case 'detailed':
+            case 'detailed_count';
                 if ( isset( $params['match'] ) ) {
                     $match = ' OR ';
                     if ( $params['match'] === 'all' ) $match = ' AND ';
@@ -414,10 +421,16 @@ class DatabaseController {
                         case 'query':
                         case 'resultsPerPage':
                         case 'csv':
+                        case 'offset':
                             break;
                         }
                     }
-                    $sql = 'SELECT * FROM `events` WHERE '.join( $match, $fields ).' ORDER BY `timestamp` DESC';
+                    if ( !isset( $params['resultsPerPage'] ) ) $params['resultsPerPage'] = 1;
+                    if ( !isset( $params['offset'] ) ) $params['offset'] = 0;
+                    $sql = 'SELECT * FROM `events` WHERE '.join( $match, $fields ).' ORDER BY `timestamp` DESC LIMIT '.$params['resultsPerPage'].' OFFSET '.( ( ( $params['offset'] * 1 ) - 1 ) * $params['resultsPerPage'] );
+                    if ( $params['query'] == 'detailed_count' ) {
+                        $sql = 'SELECT COUNT(*) FROM `events` WHERE '.join( $match, $fields ).' ORDER BY `timestamp` DESC';
+                    }
                     $statement = $this->_db->prepare( $sql );
                     $statement->execute();
                     $results = $statement->fetchAll( PDO::FETCH_ASSOC );
@@ -475,16 +488,26 @@ class DatabaseController {
 
      ==========================================================================*/
     private function _decodeAllJson( $object ) {
+        /*if ( !is_array( $object ) ) return $object;
+        if ( isset( $object['newsletter'] ) ) $object['newsletter'] = json_decode( $object['newsletter'], true );
+        if ( isset( $object['category'] ) ) {
+            if ( is_array( $object['category'] ) ) $object['category'] = json_decode( $object['category'], true );
+            else if ( is_string( $object['category'] ) ) $object['category'] = array( $object['category'] );
+        }*/
         if ( is_string( $object ) ) {
             // OBJECT IS A STRING - DECODE IT AND RETURN.
             $decoded = json_decode( $object, true, 512 );
             if ( $decoded ) return $decoded;
-            else return $object;
+            else return str_replace("\\/", "/", $object);
         } else if ( $this->isAssociativeArray( $object ) ) {
                 $new_object = array();
                 foreach ( $object as $key=>$value ) {
-                    $new_val = $this->_decodeAllJson( $value );
-                    $new_object[$key] = $new_val;
+                    if ( $key == 'category' and is_string( $value ) ) {
+                        $new_object[$key] = array( $value );
+                    } else {
+                        $new_val = $this->_decodeAllJson( $value );
+                        $new_object[$key] = $new_val;
+                    }
                 }
                 return $new_object;
             } else if ( is_array( $object ) ) {

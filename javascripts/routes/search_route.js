@@ -7,16 +7,19 @@
 
 App.SearchRoute = Ember.Route.extend({
 	model: function(params) {
-		var query = params.query,
+		var resultsPerPage = 10,
 			page = params.page,
-			resultsPerPage = 10;
+			query = {
+				query: "wildcard",
+				text: params.query,
+				resultsPerPage: resultsPerPage,
+				offset: page
+			};
+		var url = "api/search.php?" + $.param(query);
 
-		return Ember.$.getJSON('api/search.php?query=wildcard&resultsPerPage=' + resultsPerPage + '&text=' + query).then(function(response) {
-			response.query = query;
+		return Ember.$.getJSON(url).then(function(response) {
+			response.query = query.text;
 			response.page = page;
-			var allResults = response.data;
-			response.data = allResults.slice(((page - 1) * resultsPerPage), (page * resultsPerPage));
-			console.log(response);
 			return response;
 		});
 	}

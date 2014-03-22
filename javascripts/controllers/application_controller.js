@@ -11,16 +11,21 @@ App.ApplicationController = Ember.Controller.extend({
 
 	actions: {
 		search: function() {
-			var query = this.get('query'),
+			var resultsPerPage = 10,
 				page = 1,
-				resultsPerPage = 10,
+				query = {
+					query: "wildcard",
+					text: this.get('query'),
+					resultsPerPage: resultsPerPage,
+					offset: page
+				},
 				self = this;
+			var url = "api/search.php?" + $.param(query);
+			this.set("query", "");
 
-			Ember.$.getJSON('api/search.php?query=wildcard&resultsPerPage=' + resultsPerPage + '&text=' + query).then(function(response) {
-				response.query = query;
+			Ember.$.getJSON(url).then(function(response) {
+				response.query = query.text;
 				response.page = page;
-				var allResults = response.data;
-				response.data = allResults.slice(((page - 1) * resultsPerPage), (page * resultsPerPage));
 				self.transitionToRoute('search', response);
 			});
 		}

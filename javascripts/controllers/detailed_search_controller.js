@@ -99,17 +99,15 @@ App.DetailedSearchController = Ember.ArrayController.extend({
             }
 
             var self = this,
-                query = model,
                 page = "1",
                 resultsPerPage = 10;
-            query.resultsPerPage = resultsPerPage;
-            var url = "api/search.php?" + $.param(query);
+            model.resultsPerPage = resultsPerPage;
+            model.offset = page;
+            var url = "api/search.php?" + $.param(model);
 
             Ember.$.getJSON(url).then(function(response) {
                 response.page = page;
-                response.query = JSON.stringify(query);
-                var allResults = response.data;
-                response.data = allResults.slice(((page - 1) * resultsPerPage), (page * resultsPerPage));
+                response.query = JSON.stringify(model);
                 self.transitionToRoute('detailedSearchResults', response);
             });
         }

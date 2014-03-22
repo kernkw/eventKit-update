@@ -1,14 +1,11 @@
 /* ==========================================================================
  * EVENT.JS
  * ==========================================================================
- *
- * SUMMARY
- * This file contains the Ember JS data for the Event Details page.
- *
+ * This is the controller for the event page, where you can view info for
+ * a specific event. This controller is mainly watching for when the model
+ * changes (for when related events get loaded) and dressing up the UI
+ * to explain different events more clearly.
  */
-
-/* ROUTES
- *=========================================================================*/
 
 App.EventController = Ember.ObjectController.extend({
 	modelDidChange: function() {
@@ -84,23 +81,4 @@ App.EventController = Ember.ObjectController.extend({
 		}
 	}.observes('model')
 
-});
-
-App.EventRoute = Ember.Route.extend({
-	model: function(params) {
-		var uid = params.uid,
-			searchParams = {
-				query: 'detailed',
-				match: 'all',
-				uid: uid
-			};
-
-		return Ember.$.getJSON('api/search.php?' + $.param(searchParams)).then(function(results) {
-			if (results.data.length) {
-				return results.data[0];
-			} else {
-				return [];
-			}
-		});
-	}
 });

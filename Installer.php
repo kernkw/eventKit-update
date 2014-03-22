@@ -28,8 +28,13 @@ if ( file_exists( 'db' ) and is_dir( 'db' ) ) {
 
     <!-- STYLES -->
     <style type="text/css">
-        body {
+        #bg {
             background: #EFEFEF;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
         }
 
         #container {
@@ -42,13 +47,18 @@ if ( file_exists( 'db' ) and is_dir( 'db' ) ) {
             position: absolute;
         }
     </style>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/application/css/application.css">
+    <link rel="stylesheet" href="assets/vendor/css/vendor.css">
 
 </head>
 <body>
+<div id="bg">
 <?php
 
 if ( isset( $_POST['username'] ) and isset( $_POST['password'] ) ) {
+    // CREATE A NEW DATABASE INSTANCE
+    SendGrid\EventKit\DatabaseController::createNewDatabase();
+
     // CREATE THE HTACCESS
     $location = dirname( __FILE__ );
     $contents = "AuthType Basic\nAuthUserFile ".$location."/.htpasswd\nAuthName \"Members Area\"\nrequire valid-user";
@@ -81,8 +91,6 @@ if ( isset( $_POST['username'] ) and isset( $_POST['password'] ) ) {
 
 <?php
 } else {
-    // CREATE A NEW DATABASE INSTANCE
-    SendGrid\EventKit\DatabaseController::createNewDatabase();
 
     // CLEAN UP
     // Delete uneeded files
@@ -116,6 +124,6 @@ if ( isset( $_POST['username'] ) and isset( $_POST['password'] ) ) {
 <?php
 }
 ?>
-
+</div>
 </body>
 </html>

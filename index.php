@@ -13,6 +13,12 @@
 
 require_once("DatabaseController.php");
 
+if ( !file_exists( 'db' ) or !is_dir( 'db' ) ) {
+    // If there's no database, go to the Installer to setup everything.
+    header( "Location: Installer.php" );
+    die();
+}
+
 // DETERMINE IF THERE'S POST DATA
 if (isset($HTTP_RAW_POST_DATA)) {
     $db = new SendGrid\EventKit\DatabaseController();

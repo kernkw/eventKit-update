@@ -7,7 +7,7 @@
 
 App.SearchRoute = Ember.Route.extend({
 	model: function(params) {
-		var resultsPerPage = 10,
+		var resultsPerPage = kResultsPerPage,
 			page = params.page,
 			query = {
 				query: "wildcard",

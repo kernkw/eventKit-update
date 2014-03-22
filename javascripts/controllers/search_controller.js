@@ -8,10 +8,12 @@ App.SearchController = Ember.Controller.extend({
     actions: {
         downloadCSV: function() {
             var params = {
-                text: decodeURIComponent(this.get('model.query')),
-                query: 'wildcard',
-                csv: true
-            };
+                    text: decodeURIComponent(this.get('model.query')),
+                    query: 'wildcard',
+                    csv: true,
+                    offset: 0,
+                    resultsPerPage: kResultsPerPage
+                };
             window.location = "api/search.php?" + $.param(params);
         }
     }

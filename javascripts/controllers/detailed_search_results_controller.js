@@ -9,6 +9,8 @@
         downloadCSV: function() {
             var params = JSON.parse(decodeURIComponent(this.get('model.query')));
             params.csv = true;
+            params.offset = 0;
+            params.resultsPerPage = kResultsPerPage;
             window.location = "api/search.php?" + $.param(params);
         }
     }

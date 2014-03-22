@@ -7,9 +7,8 @@
 App.DetailedSearchResultsRoute = Ember.Route.extend({
     model: function(params) {
         var query = JSON.parse(decodeURIComponent(params.query)),
-            page = params.page,
-            resultsPerPage = 10;
-        query.resultsPerPage = resultsPerPage;
+            page = params.page;
+        query.resultsPerPage = kResultsPerPage;
         query.offset = page;
         var url = "api/search.php?" + $.param(query);
 

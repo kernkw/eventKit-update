@@ -99,9 +99,8 @@ App.DetailedSearchController = Ember.ArrayController.extend({
             }
 
             var self = this,
-                page = "1",
-                resultsPerPage = 10;
-            model.resultsPerPage = resultsPerPage;
+                page = "1";
+            model.resultsPerPage = kResultsPerPage;
             model.offset = page;
             var url = "api/search.php?" + $.param(model);
 

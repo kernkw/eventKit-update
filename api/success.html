@@ -1,0 +1,57 @@
+<?php
+/* ==========================================================================
+ * INSTALLER
+ * ==========================================================================
+ *
+ * SUMMARY
+ * This script takes care of the initial installation of the
+ * SendGrid Event Webhook Starter Kit
+ *
+ */
+
+require_once "Logger.php";
+require_once "Installer.php";
+require_once "curl-post.php";
+
+?>
+
+<html>
+<head>
+    <title>SendGrid Event Webhook Starter Kit Setup</title>
+
+    <!-- STYLES -->
+    <style type="text/css">
+        body {
+            background: #EFEFEF;
+        }
+
+        #container {
+            width: 800px;
+            height: 400px;
+            left: 50%;
+            top: 50%;
+            margin-left: -400px;
+            margin-top: -200px;
+            position: absolute;
+        }
+    </style>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+</head>
+<body>
+
+         <div id="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <img src="../images/brand.png" />
+            </div>
+            <div class="panel-body">
+                <p>You're all set up!  Now you can log in to <a target="_blank" href="http://sendgrid.com/app">http://sendgrid.com/app</a> and set the following URL in the Event Notification settings:</p>
+                <strong><?php echo $http.$_POST['username'].':'.$_POST['password'].'@'.$_SERVER['HTTP_HOST'].dirname( $_SERVER['PHP_SELF'); ?></strong>
+                <p><a href="../index.php">Go to dashboard</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

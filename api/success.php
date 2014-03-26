@@ -22,6 +22,15 @@ session_start();
             background: #EFEFEF;
         }
 
+        #bg {
+            background: #EFEFEF;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+        }
+
         #container {
             width: 800px;
             height: 400px;
@@ -33,10 +42,12 @@ session_start();
         }
     </style>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/application/css/application.css">
+    <link rel="stylesheet" href="../assets/vendor/css/vendor.css">
 
 </head>
 <body>
-
+<div id="bg">
          <div id="container">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -52,6 +63,7 @@ session_start();
             </div>
         </div>
     </div>
+</div>
 
 </body>
 </html>

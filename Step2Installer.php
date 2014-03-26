@@ -29,23 +29,36 @@ require_once "DatabaseController.php";
 
         }
 
+        #bg {
+            background: #EFEFEF;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+        }
+
         .error {color: #FF0000;}
 
         #container {
             width: 800px;
-            height: 400px;
+            height: 600px;
             left: 50%;
             top: 50%;
             margin-left: -400px;
-            margin-top: -200px;
+            margin-top: -300px;
             position: absolute;
         }
     </style>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/application/css/application.css">
+    <link rel="stylesheet" href="assets/vendor/css/vendor.css">
+
 
   </head>
-  
+
   <body>
+    <div id="bg">
     <div id="container">
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -61,61 +74,54 @@ $username = $password = "";
 
 <span class="error">
 <?php
-if (isset($_GET['error1']) && isset($_GET['error2']))
-  {
+if ( isset( $_GET['error1'] ) && isset( $_GET['error2'] ) ) {
   $curl_response1 = $_GET['error1'];
   $curl_response2 = $_GET['error2'];
   echo "There was an error processing your request.\r\n";
   echo $curl_response1;
   echo $curl_response2;
-  }
+}
 ?>
 </span>
 
 <?php
 
-if (isset($_POST['submit']))
-  {
-  if (empty($_POST["sg_username"]) || empty($_POST["sg_password"]))
-    {
+if ( isset( $_POST['submit'] ) ) {
+  if ( empty( $_POST["sg_username"] ) || empty( $_POST["sg_password"] ) ) {
 ?>
 
 <p><span class="error">* required field.</span></p>
 <?php
-    if (empty($_POST["sg_username"]))
-      {
+    if ( empty( $_POST["sg_username"] ) ) {
       $usernameErr = "* Username is required";
-      }
-
-    if (empty($_POST["sg_password"]))
-      {
-      $passwordErr = "* Password is required";
-      }
     }
-    else
-    {
-    $username = clean_up_input($_POST["sg_username"]);
-    $password = clean_up_input($_POST["sg_password"]);
+
+    if ( empty( $_POST["sg_password"] ) ) {
+      $passwordErr = "* Password is required";
+    }
+  }
+  else {
+    $username = clean_up_input( $_POST["sg_username"] );
+    $password = clean_up_input( $_POST["sg_password"] );
     $_SESSION["sg_username"] = $username;
     $_SESSION["sg_password"] = $password;
-    $_SESSION["Processed"] = (isset($_POST['Processed'])) ? 1 : 0;
-    $_SESSION["Dropped"] = (isset($_POST['Dropped'])) ? 1 : 0;
-    $_SESSION["Deferred"] = (isset($_POST['Deferred'])) ? 1 : 0;
-    $_SESSION["Delivered"] = (isset($_POST['Delivered'])) ? 1 : 0;
-    $_SESSION["Bounced"] = (isset($_POST['Bounced'])) ? 1 : 0;
-    $_SESSION["Clicked"] = (isset($_POST['Clicked'])) ? 1 : 0;
-    $_SESSION["Opened"] = (isset($_POST['Opened'])) ? 1 : 0;
-    $_SESSION["Unsubscribed"] = (isset($_POST['Unsubscribed'])) ? 1 : 0;
-    $_SESSION["Spam"] = (isset($_POST['Spam'])) ? 1 : 0;
-    header("Location: api/curl-post.php");
-    }
+    $_SESSION["Processed"] = ( isset( $_POST['Processed'] ) ) ? 1 : 0;
+    $_SESSION["Dropped"] = ( isset( $_POST['Dropped'] ) ) ? 1 : 0;
+    $_SESSION["Deferred"] = ( isset( $_POST['Deferred'] ) ) ? 1 : 0;
+    $_SESSION["Delivered"] = ( isset( $_POST['Delivered'] ) ) ? 1 : 0;
+    $_SESSION["Bounced"] = ( isset( $_POST['Bounced'] ) ) ? 1 : 0;
+    $_SESSION["Clicked"] = ( isset( $_POST['Clicked'] ) ) ? 1 : 0;
+    $_SESSION["Opened"] = ( isset( $_POST['Opened'] ) ) ? 1 : 0;
+    $_SESSION["Unsubscribed"] = ( isset( $_POST['Unsubscribed'] ) ) ? 1 : 0;
+    $_SESSION["Spam"] = ( isset( $_POST['Spam'] ) ) ? 1 : 0;
+    header( "Location: api/curl-post.php" );
   }
+}
 
-function clean_up_input($data)
-  {
-  $data = trim($data);
+function clean_up_input( $data ) {
+  $data = trim( $data );
   return $data;
-  }
+}
 ?>
           <form role="form" action="" method="POST">
             <div class="form-group">
@@ -139,11 +145,12 @@ function clean_up_input($data)
               <input type="checkbox" name="Clicked" value="1" checked>Clicked<br />
               <input type="checkbox" name="Unsubscribed" value="1" checked>Unsubscribed From<br />
               <input type="checkbox" name="Spam" value="1" checked>Marked as Spam<br />
-            </div>        
+            </div>
               <button type="submit" name="submit" class="btn btn-default">Finish</button>
-          </form>            
+          </form>
         </div>
       </div>
-    </div>      
+    </div>
+  </div>
   </body>
 </html>

@@ -106,6 +106,7 @@ module.exports = function(grunt) {
                     src: [
                         'index.php',
                         'Installer.php',
+                        'Step2Installer.php',
                         'DatabaseController.php',
                         'Logger.php',
                         'api/**/*',

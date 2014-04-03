@@ -1,11 +1,17 @@
+body, html {
+    background: #2f3847 !important;
+}
+
 .brand {
+    @brand_height: 35px;
+    @brand_width: (290.238px / 73.646px) * @brand_height;
     position: absolute;
-    left: 0px;
+    left:15px;
     bottom: 0px;
     top: 0px;
-    width: 200px;
-    background: url('../../../images/brand.png');
-    background-size: 200px 50px;
+    width: @brand_width;
+    background: url('../../../images/sendgrid-logo.svg') no-repeat center;
+    background-size: @brand_width @brand_height;
 }
 
 .nav {
@@ -14,11 +20,9 @@
     left: 0px;
     right: 0px;
     height: 50px;
-    /*background: #0073C7*/;
-    background: url('../../../images/banner.png');
+    background: #2f3847;
     background-size: 500px;
-    box-shadow: 0px 0px 5px #000;
-    z-index: 10;
+    z-index: 1;
 }
 
 .nav_container {
@@ -27,6 +31,8 @@
     height: 100%;
     left: 50%;
     margin-left: -450px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .search {
@@ -35,16 +41,19 @@
 }
 
 .body {
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
     position: absolute;
     top: 50px;
     left: 0px;
     right: 0px;
     bottom: 0px;
     background: #EFEFEF;
-    z-index: 1;
+    z-index: 10;
+    box-shadow: 0px 0px 5px #000;
     font-family: Helvetica, Arial, sans-serif;
     overflow-y: auto;
-    overflow-x: none;
+    overflow-x: hidden;
 }
 
 .body_container {
@@ -89,4 +98,14 @@ h1, h2, h3 {
 .form-field {
     width: 500px !important;
     margin-right: 10px !important;
+}
+
+.panel-heading {
+    background: #2f3847 !important;
+    border-color: #2f3847 !important;
+    color: white !important;
+}
+
+.panel-info, .panel-primary {
+    border-color: #2f3847 !important;
 }

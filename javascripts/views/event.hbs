@@ -1,0 +1,134 @@
+<span class="outer-text">
+    <h1>Event Details</h1>
+    {{#if event}}
+        <h2 style="font-size: 22px; margin-bottom: 0px;">{{event-color event}}</h2>
+    {{/if}}
+    {{#if email}}
+        {{#link-to 'email' email}}
+            <span style="font-size: 18px; margin: 0px; font-weight: bold;">{{email}}</span>
+        {{/link-to}}
+    {{/if}}
+</span>
+<table border="0" cellspacing="0" cellpadding="0" style="width: 100%; table-layout:fixed;">
+    <tr>
+        <td style="width: 415px; vertical-align: top;">
+            <div class="panel panel-info" style="margin-top: 25px;">
+                <div class="panel-heading">
+                    Event Information
+                </div>
+                <div class="panel-body" id="event-info-body" style="overflow:hidden">
+                    {{#if timestamp}}
+                        <p><b>Time:</b></p>
+                        <ul><li>{{format-date timestamp}}</li></ul>
+                    {{/if}}
+
+                    {{#if event_post_timestamp}}
+                        <p><b>Event Posted At:</b></p>
+                        <ul><li>{{format-date event_post_timestamp}}</li></ul>
+                    {{/if}}
+
+                    {{#if subject}}
+                        <p><b>Subject:</b></p>
+                        <ul><li>{{subject}}</li></ul>
+                    {{/if}}
+
+                    {{#if smtpid}}
+                        <p><b>SMTP-ID:</b></p>
+                        <ul><li><span id='current_smtpid'>{{smtpid}}</span></li></ul>
+                    {{/if}}
+
+                    {{#if sg_event_id}}
+                        <p><b>SendGrid Event ID:</b></p>
+                        <ul><li>{{sg_event_id}}</li></ul>
+                    {{/if}}
+
+                    {{#if category}}
+                        <p><b>Categories:</b></p>
+                        <ul>
+                            {{#each category}}
+                                <li>{{this}}</li>
+                            {{/each}}
+                        </ul>
+                    {{/if}}
+
+                    {{#if newsletter}}
+                        <p><b>Newsletter Info:</b></p>
+                        <ul>
+                            <li>Newsletter ID: {{newsletter.newsletter_id}}</li>
+                            <li>User List ID: {{newsletter.newsletter_user_list_id}}</li>
+                            <li>Send ID: {{newsletter.newsletter_send_id}}</li>
+                        </ul>
+                    {{/if}}
+
+                    {{#if reason}}
+                        <p><b>Reason:</b></p>
+                        <ul><li>{{reason}}</li></ul>
+                    {{/if}}
+
+                    {{#if response}}
+                        <p><b>Response:</b></p>
+                        <ul><li>{{response}}</li></ul>
+                    {{/if}}
+
+                    {{#if url}}
+                        <p><b>URL:</b></p>
+                        <ul><li>{{url}}</li></ul>
+                    {{/if}}
+
+                    {{#if ip}}
+                        <p><b>IP:</b></p>
+                        <ul><li>{{ip}}</li></ul>
+                    {{/if}}
+
+                    {{#if useragent}}
+                        <p><b>User Agent:</b></p>
+                        <ul><li>{{useragent}}</li></ul>
+                    {{/if}}
+
+                    {{#if attempt}}
+                        <p><b>Attempt:</b> {{attempt}}</p>
+                    {{/if}}
+
+                    {{#if status}}
+                        <p><b>Status:</b></p>
+                        <ul><li>{{status}}</li></ul>
+                    {{/if}}
+
+                    {{#if type}}
+                        <p><b>Type:</b></p>
+                        <ul><li class="truncate">{{type}}</li></ul>
+                    {{/if}}
+
+                    {{#if sg_message_id}}
+                        <p><b>SendGrid Message ID:</b></p>
+                        <ul><li class="truncate">{{smtpid}}</li></ul>
+                    {{/if}}
+
+                    {{#if additional_arguments}}
+                        <p><b>Additional Arguments</b></p>
+                        {{list-additional-arguments additional_arguments}}
+                    {{/if}}
+                    <span id="drop-reason"></span>
+                </div>
+            </div>
+        </td>
+        <td style="width: 40px"></td>
+        <td style="width: 415px; vertical-align: top;">
+            <div class="panel panel-info" style="margin-top: 25px;">
+                <div class="panel-heading">
+                    Related Events
+                </div>
+                <div class="panel-body">
+                    Related events are determined by the SMTP-ID of the message. Keep in mind that not all events have an SMTP-ID (such as opens and clicks), so you might not see all the related events listed below.
+                </div>
+                <div class="list-group" style="overflow-y: auto;" id="related-group">
+                    <span href="#" class="list-group-item">
+                        <h3 style="font-size: 18px; margin-top: 1em; margin-bottom: 1em;">
+                            No related events found.
+                        </h3>
+                    </span>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

@@ -18,7 +18,9 @@ module.exports = function(grunt) {
                 src: [
                     'javascripts/libs/jquery-1.10.2.js',
                     'javascripts/libs/handlebars-1.1.2.js',
-                    'javascripts/libs/ember-1.3.1.js'
+                    'javascripts/libs/ember-1.3.1.js',
+                    'javascripts/libs/bootstrap-3.1.1.js',
+                    'javascripts/libs/bootstrap-datepicker.js'
                 ],
                 dest: 'assets/vendor/js/vendor.js'
             },
@@ -33,9 +35,12 @@ module.exports = function(grunt) {
             },
             js_app: {
                 src: [
+                    'javascripts/application.js',
+                    'javascripts/router.js',
                     'javascripts/controllers/*.js',
                     'javascripts/views/*.js',
-                    'javascripts/helpers/*.js'
+                    'javascripts/helpers/*.js',
+                    'javascripts/routes/*.js'
                 ],
                 dest: 'assets/application/js/application.js'
             }
@@ -101,6 +106,7 @@ module.exports = function(grunt) {
                     src: [
                         'index.php',
                         'Installer.php',
+                        'Step2Installer.php',
                         'DatabaseController.php',
                         'Logger.php',
                         'api/**/*',

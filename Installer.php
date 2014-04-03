@@ -9,13 +9,16 @@
  *
  */
 
+session_start();
+
 require_once "Logger.php";
 require_once "DatabaseController.php";
 
 $http = empty( $_SERVER['HTTPS'] ) ? 'http://' : 'https://';
 
-if ( file_exists( 'db' ) and is_dir( 'db' ) ) {
-    // We've already set things up - so redirect to the index page.
+
+// We've already set things up - so redirect to the index page.
+if ( $_SESSION['alreadysetup'] == true and file_exists( 'db' ) and is_dir( 'db' ) ) {
     header( "Location: index.php" );
     die();
 }
@@ -28,9 +31,16 @@ if ( file_exists( 'db' ) and is_dir( 'db' ) ) {
 
     <!-- STYLES -->
     <style type="text/css">
-        body {
+        #bg {
             background: #EFEFEF;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
         }
+
+        .error {color: #FF0000;}
 
         #container {
             width: 800px;
@@ -42,53 +52,74 @@ if ( file_exists( 'db' ) and is_dir( 'db' ) ) {
             position: absolute;
         }
     </style>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/application/css/application.css">
+    <link rel="stylesheet" href="assets/vendor/css/vendor.css">
 
 </head>
 <body>
+<div id="bg">
+
 <?php
 
-if ( isset( $_POST['username'] ) and isset( $_POST['password'] ) ) {
+if ( !empty( $_POST['username'] ) && !empty( $_POST['password'] ) ) {
+    // CREATE A NEW DATABASE INSTANCE
+    SendGrid\EventKit\DatabaseController::createNewDatabase();
+
     // CREATE THE HTACCESS
     $location = dirname( __FILE__ );
-    $contents = "AuthType Basic\nAuthUserFile ".$location."/.htpasswd\nAuthName \"Members Area\"\nrequire valid-user";
-    $htaccess = $location.'/.htaccess';
+    $contents = "AuthType Basic\nAuthUserFile " . $location . "/.htpasswd\nAuthName \"Members Area\"\nrequire valid-user";
+    $htaccess = $location . '/.htaccess';
     file_put_contents( $htaccess, $contents );
 
     // CREATE THE HTPASSWD
-    $hash = base64_encode( sha1( $_POST['password'], true ) );
-    $password = $_POST['username'].':{SHA}' . $hash;
-    $htpasswd = $location.'/.htpasswd';
+    $hash     = base64_encode( sha1( $_POST['password'], true ) );
+    $password = $_POST['username'] . ':{SHA}' . $hash;
+    $htpasswd = $location . '/.htpasswd';
     file_put_contents( $htpasswd, $password );
 
     // PERMISSIONS
     chmod( '.htaccess', 0777 );
     chmod( '.htpasswd', 0777 );
-?>
 
-    <div id="container">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <img src="images/brand.png" />
-            </div>
-            <div class="panel-body">
-                <p>You're all set up!  Now you can log in to <a target="_blank" href="http://sendgrid.com/app">http://sendgrid.com/app</a> and set the following URL in the Event Notification settings:</p>
-                <strong><?php echo $http.$_POST['username'].':'.$_POST['password'].'@'.$_SERVER['HTTP_HOST'].dirname( $_SERVER['PHP_SELF'] ); ?></strong>
-                <p><a href="index.php">Go to dashboard</a></p>
-            </div>
-        </div>
-    </div>
+    $username             = trim( $_POST["username"] );
+    $password             = trim( $_POST["password"] );
+    $_SESSION['username'] = $username;
+    $_SESSION['password'] = $password;
+    $_SESSION['eventurl'] = $http . $_SESSION['username'] . ':' . $_SESSION['password'] . '@' . $_SERVER['HTTP_HOST'] . dirname( $_SERVER['PHP_SELF'] );
 
-<?php
+    $alreadysetup = true;
+    $_SESSION['alreadysetup'] = $alreadysetup;
+
+
+    header( "Location: step2Installer.php" );
+
 } else {
-    // CREATE A NEW DATABASE INSTANCE
-    SendGrid\EventKit\DatabaseController::createNewDatabase();
+
+    // already setup so go to dashboard
+    $alreadysetup = false;
+    $_SESSION['alreadysetup'] = $alreadysetup;
+
+    // define variables and set to empty values
+    $usernameErr = $passwordErr = "";
+
+    if ( isset( $_POST["username"] ) && isset( $_POST["password"] ) ) {
+        if ( empty( $_POST["username"] ) ) {
+            $usernameErr = "* Username is required";
+        }
+
+        if ( empty( $_POST["password"] ) ) {
+            $passwordErr = "* Password is required";
+        }
+    }
 
     // CLEAN UP
     // Delete uneeded files
     $parentDir = dirname( dirname( __FILE__ ) );
-    unlink( $parentDir.DIRECTORY_SEPARATOR."eventkit.zip" );
-    unlink( $parentDir.DIRECTORY_SEPARATOR."index.php" );
+    if ( file_exists( $parentDir . DIRECTORY_SEPARATOR . "eventkit.zip" ) ) {
+        unlink( $parentDir . DIRECTORY_SEPARATOR . "eventkit.zip" );
+    }
+    //unlink( $parentDir.DIRECTORY_SEPARATOR."index.php" );
+}
 ?>
 
     <div id="container">
@@ -102,20 +133,19 @@ if ( isset( $_POST['username'] ) and isset( $_POST['password'] ) ) {
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                        <span class="error"><?php echo $usernameErr;?></span>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
+                        <span class="error"><?php echo $passwordErr;?></span>
+                    </div>
+
+                  <button type="submit" class="btn btn-default">Proceed to Next Step</button>
                 </form>
             </div>
         </div>
     </div>
-
-<?php
-}
-?>
-
+</div>
 </body>
 </html>

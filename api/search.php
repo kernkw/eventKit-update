@@ -35,9 +35,16 @@ if ( array_key_exists( "query", $_GET ) ) {
     }
 
     if ( array_key_exists( "resultsPerPage", $_GET ) ) {
-        $resultsPerPage = $_GET["resultsPerPage"];
-        $mod = count( $response['data'] ) % ( $_GET["resultsPerPage"] * 1 );
-        $totalPages = ( count( $response['data'] ) - $mod ) / $resultsPerPage;
+        $count_query = $_GET['query'].'_count';
+        $copy = array( 'query' => $count_query );
+        foreach ( $_GET as $key => $value ) {
+            if ( $key == 'query' ) continue;
+            $copy[$key] = $value;
+        }
+        $count = $db->processQuery( $copy );
+        $resultsPerPage = $copy["resultsPerPage"];
+        $mod = $count[0]['COUNT(*)'] % ( $copy["resultsPerPage"] * 1 );
+        $totalPages = ( $count[0]['COUNT(*)'] - $mod ) / $resultsPerPage;
         if ( $mod ) $totalPages++;
         $pageArray = array();
         for ( $i = 1; $i <= $totalPages; $i++ ) {

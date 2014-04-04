@@ -111,7 +111,8 @@ module.exports = function(grunt) {
                         'Logger.php',
                         'api/**/*',
                         'assets/**/*',
-                        'images/**/*'
+                        'images/**/*',
+                        'LICENSE.md'
                     ],
                     dest: 'production/'
                 }]

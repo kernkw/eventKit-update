@@ -521,6 +521,38 @@ class DatabaseController {
             return $object;
         }
     }
+
+    /* _deleteAfterTime
+
+     SUMMARY
+     Pulls in delete time from the settings page, 
+
+     PARAMETERS
+     $settings    How far back they want to store events. 0- no delete
+
+     RETURNS
+     The number of rows modified.
+
+     ==========================================================================*/
+    private function _deleteAfterTime( $months ) {
+
+        if ($months != 0) {
+            // One Year
+            // Deletes events older than one year 
+            $deltime = (time() - strtotime('-' . $months . ' months'));
+            $sql = 'DELETE COUNT(*) FROM `events` WHERE `event_post_timestamp` < '.( $deltime );
+            $statement = $this->_db->prepare( $sql );
+            $statement->execute();
+            return sqlite_changes($statement);
+
+        } else {
+
+            return 0;
+
+        }
+
+    }
+
 }
 
 ?>

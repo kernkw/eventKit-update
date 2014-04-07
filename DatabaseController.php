@@ -134,6 +134,14 @@ class DatabaseController {
             $create_table = "CREATE TABLE IF NOT EXISTS `events` (\n$table_columns\n);";
             $file_db->exec( $create_table );
             Logger::logSystem( "Created table \"events\" in the database." );
+
+            $create_settings = "CREATE TABLE IF NOT EXISTS settings (setting TEXT, value TEXT);";
+            $file_db->exec( $create_settings );
+
+            $default_autodelete = "INSERT INTO settings (setting, value) VALUES ('autodelete', '6')";
+            $file_db->exec( $default_autodelete );
+
+            Logger::logSystem( "Created table \"settings\" in the database and set a default auto delete value to 6 months." );
         } catch( Exception $e ) {
             // LOG THE ERROR
             Logger::logError( "An error occurred while creating a new database: ".$e->getMessage() );
@@ -158,6 +166,15 @@ class DatabaseController {
 
      ==========================================================================*/
     public function processPost( $json ) {
+        // FIRST THINGS FIRST - DELETE OLD POSTS
+        $timeframe_sql = "SELECT * FROM settings WHERE setting = \"autodelete\";";
+        $statement = $this->_db->prepare( $timeframe_sql );
+        $statement->execute();
+        $results = $statement->fetchAll( PDO::FETCH_ASSOC );
+        $response = $this->_decodeAllJson( $results );
+        $months = intval( $response[0]['value'] );
+        $deleted = $this->_deleteAfterTime( $months );
+
         $parsed;
 
         // TRY PARSING THE STRING, THROW AN ERROR IF NEEDED.
@@ -525,7 +542,7 @@ class DatabaseController {
     /* _deleteAfterTime
 
      SUMMARY
-     Pulls in delete time from the settings page, 
+     Pulls in delete time from the settings page,
 
      PARAMETERS
      $settings    How far back they want to store events. 0- no delete
@@ -536,14 +553,15 @@ class DatabaseController {
      ==========================================================================*/
     private function _deleteAfterTime( $months ) {
 
-        if ($months != 0) {
+        if ( $months != 0 ) {
             // One Year
-            // Deletes events older than one year 
-            $deltime = (time() - strtotime('-' . $months . ' months'));
-            $sql = 'DELETE COUNT(*) FROM `events` WHERE `event_post_timestamp` < '.( $deltime );
+            // Deletes events older than one year
+            $deltime = ( time() - strtotime( '-' . $months . ' months' ) );
+            echo $deltime;
+            $sql = 'DELETE FROM `events` WHERE `timestamp` < '.( $deltime );
             $statement = $this->_db->prepare( $sql );
             $statement->execute();
-            return sqlite_changes($statement);
+            return $statement->rowCount();
 
         } else {
 

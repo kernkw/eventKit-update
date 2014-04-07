@@ -3,7 +3,7 @@
 unlink( dirname(__FILE__).DIRECTORY_SEPARATOR."index.php" );
 
 $manifest_location = "https://raw.githubusercontent.com/sendgrid/eventkit/master/manifest.js";
-$manifest_json = file_get_contents( $manifest_location );
+$manifest_json = get_data( $manifest_location );
 $manifest = json_decode( $manifest_json, true );
 $current_version = $manifest['current_version'];
 $version = $manifest['versions'][$current_version];
@@ -24,7 +24,7 @@ function processManifest( $manifest, $local_path, $remote_path ) {
             } else {
                 $full_local_path = array_merge( $local_path, array( $key ) );
                 $full_remote_path = array_merge( $remote_path, array( $key ) );
-                $file_contents = file_get_contents( join( "/", $full_remote_path ) );
+                $file_contents = get_data( join( "/", $full_remote_path ) );
                 file_put_contents( join( DIRECTORY_SEPARATOR, $full_local_path ), $file_contents );
             }
         }
@@ -37,6 +37,17 @@ function createFolder( $folder ) {
         mkdir( $folder, 0777 );
         umask( $oldumask );
     }
+}
+
+function get_data($url) {
+    $ch = curl_init();
+    $timeout = 5;
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
 }
 
 ?>

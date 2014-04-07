@@ -1,0 +1,146 @@
+body,
+html {
+  background: #2f3847 !important;
+}
+
+.brand {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 15px;
+  width: 137.93457893164597px;
+  background: url('../../../images/sendgrid-logo.svg') no-repeat center;
+  background-size: 137.93457893164597px 35px;
+}
+
+.nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: 50px;
+  background: #2f3847;
+  background-size: 500px;
+}
+
+.nav_container {
+  position: absolute;
+  left: 50%;
+  width: 900px;
+  height: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-left: -450px;
+}
+
+.nav_links {
+  position: absolute;
+  left: 142.93457893164597px;
+  height: 100%;
+}
+
+.nav_links li {
+  display: inline;
+  height: 100%;
+  padding: 25px;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.nav_links li a {
+  font-weight: bold;
+  line-height: 1.5em;
+  line-height: 3.5em !important;
+  color: #EFEFEF;
+  text-decoration: none;
+}
+
+.nav_links li.active {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.search {
+  position: absolute;
+  right: 0;
+}
+
+.body {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: Helvetica, Arial, sans-serif;
+  background: #EFEFEF;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  box-shadow: 0px 0px 5px #000;
+}
+
+.body_container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 2;
+  width: 900px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-left: -450px;
+}
+
+.outer-text {
+  color: #888;
+  text-shadow: 0 1px 0px white;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 900;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.filter-row {
+  margin-top: 15px;
+}
+
+.form-argument-field {
+  width: 243px !important;
+  margin-top: 0 !important;
+  margin-right: 10px !important;
+  margin-bottom: 0 !important;
+  margin-left: 0 !important;
+}
+
+.form-field {
+  width: 500px !important;
+  margin-right: 10px !important;
+}
+
+.panel-heading {
+  color: white !important;
+  background: #2f3847 !important;
+  border-color: #2f3847 !important;
+}
+
+.panel-info,
+.panel-primary {
+  border-color: #2f3847 !important;
+}
+
+/* Put your CSS here */
+
+html,
+body {
+  margin: 20px;
+}

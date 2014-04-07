@@ -12,7 +12,6 @@ Constants.php
 /db/*
 /node_modules/*
 /javascripts/views/all_views.js
-/assets/*
 /production/*
 *.sublime-project
 *.sublime-workspace

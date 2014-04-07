@@ -2,7 +2,7 @@
     "current_version": "0.0.1",
     "versions": {
         "0.0.1": {
-            "url": "https://raw.githubusercontent.com/sendgrid/eventkit/master/",
+            "url": "https://raw.githubusercontent.com/sendgrid/eventkit/master",
             "files": {
                 "api": {
                     "curl-post.php": "",

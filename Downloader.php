@@ -51,3 +51,17 @@ function get_data($url) {
 }
 
 ?>
+
+<html>
+<head>
+
+    <script>
+        function init() {
+            window.location = "Installer.php";
+        }
+    </script>
+</head>
+<body onload="init();">
+
+</body>
+</html>

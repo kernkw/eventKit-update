@@ -14,27 +14,15 @@
  ==========================================================================*/
  
 
-$unzip_failed = false;
 $directory_writable = true;
 
-//$installerURL = "http://localhost/event_webhook_starter_kit/eventkit.zip";
-$installerURL = "http://teambetterwithbeer.com/eventkit/eventkit.zip";
+$installerURL = "https://raw.githubusercontent.com/sendgrid/eventkit/master/Downloader.php";
+
 if ( is_writable( dirname( __FILE__ ) ) ) {
-    $file = "eventkit.zip";
-	file_put_contents($file, fopen($installerURL, 'r'));
-	
-	$zip = new ZipArchive;
-    $res = $zip->open($file);
-    if ($res === TRUE) {
-        $zip->extractTo(dirname(__FILE__));
-        $zip->close();
-        chmod("eventkit", 0777);
-        file_put_contents('eventkit/Constants.php', "");
-        header("Location: eventkit/Installer.php");
-        die();
-    } else {
-    	$unzip_failed = true;
-    }
+    $downloader = file_get_contents($installerURL);
+    $file = dirname( __FILE__ ).DIRECTORY_SEPARATOR."Downloader.php";
+	file_put_contents($file, $downloader);
+    header( "Location: Downloader.php" );
 } else {
 	$directory_writable = false;
 }
@@ -44,42 +32,36 @@ if ( is_writable( dirname( __FILE__ ) ) ) {
  <head>
  	<title>SendGrid Event Webhook Starter Kit Installer</title>
  	<style type="text/css">
- 		body {
- 			background: #EFEFEF;
- 		}
+ 		#bg {
+            background: #EFEFEF;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+        }
 
- 		#container {
- 			width: 800px;
- 			height: 120px;
- 			left: 50%;
- 			top: 50%;
- 			margin-left: -400px;
- 			margin-top: -60px;
- 			position: absolute;
- 		}
+        .error {color: #FF0000;}
+
+        #container {
+            width: 800px;
+            height: 400px;
+            left: 50%;
+            top: 50%;
+            margin-left: -400px;
+            margin-top: -200px;
+            position: absolute;
+        }
  	</style>
- 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+ 	<link rel="stylesheet" href="assets/application/css/application.css">
+    <link rel="stylesheet" href="assets/vendor/css/vendor.css">
  </head>
  <body>
- 	<div id="container">
+<div id="bg">
 
 <?php
 
-if ($unzip_failed) {
-
-?>
-
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">Uh Oh!</h3>
-	</div>
-	<div class="panel-body">
-    	It looks like something went wrong during the installation. Check the permissions of the folder you placed this file in and try again.
-	</div>
-</div>
-
-<?php
-} else if (!$directory_writable) {
+if (!$directory_writable) {
 ?>
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -93,5 +75,6 @@ if ($unzip_failed) {
 }
 ?>
 	</div>
+</div>
 </body>
 </html>

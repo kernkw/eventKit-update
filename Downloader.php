@@ -1,6 +1,8 @@
 <?php
 
-$manifest_location = "manifest.js";
+unlink( dirname(__FILE__).DIRECTORY_SEPARATOR."index.php" );
+
+$manifest_location = "https://raw.githubusercontent.com/sendgrid/eventkit/master/manifest.js";
 $manifest_json = file_get_contents( $manifest_location );
 $manifest = json_decode( $manifest_json, true );
 $current_version = $manifest['current_version'];

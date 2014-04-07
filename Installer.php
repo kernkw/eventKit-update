@@ -115,10 +115,6 @@ if ( !empty( $_POST['username'] ) && !empty( $_POST['password'] ) ) {
     // CLEAN UP
     // Delete uneeded files
     $parentDir = dirname( dirname( __FILE__ ) );
-    if ( file_exists( $parentDir . DIRECTORY_SEPARATOR . "eventkit.zip" ) ) {
-        unlink( $parentDir . DIRECTORY_SEPARATOR . "eventkit.zip" );
-    }
-    //unlink( $parentDir.DIRECTORY_SEPARATOR."index.php" );
 }
 ?>
 

@@ -23,6 +23,8 @@ if ( $_SESSION['alreadysetup'] == true and file_exists( 'db' ) and is_dir( 'db' 
     die();
 }
 
+unlink( dirname(__FILE__).DIRECTORY_SEPARATOR."Downloader.php" );
+
 ?>
 
 <html>
@@ -112,9 +114,6 @@ if ( !empty( $_POST['username'] ) && !empty( $_POST['password'] ) ) {
         }
     }
 
-    // CLEAN UP
-    // Delete uneeded files
-    $parentDir = dirname( dirname( __FILE__ ) );
 }
 ?>
 

@@ -4,6 +4,11 @@ App.Router.map(function() {
         path: "/"
     });
 
+    // SETTINGS
+    this.resource('settings', {
+        path: "/settings"
+    });
+
     // SEARCH
     this.resource('search', {
         path: "/search/:query/page/:page"

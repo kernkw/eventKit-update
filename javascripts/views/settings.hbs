@@ -1,0 +1,11 @@
+<h1>Settings</h1>
+
+<p>Auto delete events that are older than 
+    {{view Ember.Select
+       content=model.autoDeleteValues
+       optionValuePath="content.value"
+       optionLabelPath="content.title"
+       value=model.selectedAutoDeleteValue}}
+    old.
+</p>
+<p style="text-align:right;"><button {{action "save"}} class="btn btn-default">Save</button></p>

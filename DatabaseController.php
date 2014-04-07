@@ -324,6 +324,24 @@ class DatabaseController {
         if ( array_key_exists( 'query', $params ) ) {
 
             switch ( $params['query'] ) {
+                // SETTINGS
+                // Retrieves the current settings.
+            case 'settings':
+                $sql = 'SELECT * FROM settings;';
+                $statement = $this->_db->prepare( $sql );
+                $statement->execute();
+                $results = $statement->fetchAll( PDO::FETCH_ASSOC );
+                $response = $this->_decodeAllJson( $results );
+                break;
+
+                // SAVE SETTINGS
+                // Write changed settings into the database.
+            case 'save_settings':
+                $sql = 'UPDATE settings SET value = "'.$params['autodelete'].'" WHERE setting = "autodelete";';
+                $stmt = $this->_db->prepare( $sql );
+                $stmt->execute();
+                break;
+
                 // RECENT
                 // Retrieves the last `n` events where `n` is specified in the
                 // `limit` parameter (all events). If `limit` isn't specified,

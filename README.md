@@ -13,7 +13,7 @@ If you just wish to install the project on your web server, you can do so by fol
 
 **Step 1 - Download The App**
 
-First, download the installer file by [clicking here](https://github.com/sendgrid/eventkit/blob/master/quick_installer/eventkit.zip?raw=true).
+First, download the installer file by [clicking here](https://github.com/sendgrid/eventkit/blob/master/quick_installer/event_kit.zip?raw=true).
 
 **Step 2 - Upload the App**
 

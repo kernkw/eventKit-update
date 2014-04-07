@@ -575,7 +575,6 @@ class DatabaseController {
             // One Year
             // Deletes events older than one year
             $deltime = ( time() - strtotime( '-' . $months . ' months' ) );
-            echo $deltime;
             $sql = 'DELETE FROM `events` WHERE `timestamp` < '.( $deltime );
             $statement = $this->_db->prepare( $sql );
             $statement->execute();

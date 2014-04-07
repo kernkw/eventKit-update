@@ -3,6 +3,10 @@
         <a href="#">
             <div class="brand"></div>
         </a>
+        <ul class="nav_links">
+            {{#link-to 'settings' tagName='li'}}<a>SETTINGS</a>{{/link-to}}
+            {{#link-to 'detailedSearch' tagName='li'}}<a>DETAILED SEARCH</a>{{/link-to}}
+        </ul>
         <div class="search">
             <div class="navbar-form navbar-left" role="search">
                 <div class="form-group">

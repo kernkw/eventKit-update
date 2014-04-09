@@ -8,7 +8,6 @@ Thumbs.db
 eventkit.zip
 *.db
 Constants.php
-/assets/*
 /logs/*
 /db/*
 /node_modules/*

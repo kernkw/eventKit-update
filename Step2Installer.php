@@ -99,8 +99,7 @@ if ( isset( $_POST['submit'] ) ) {
     if ( empty( $_POST["sg_password"] ) ) {
       $passwordErr = "* Password is required";
     }
-  }
-  else {
+  } else {
     $username = clean_up_input( $_POST["sg_username"] );
     $password = clean_up_input( $_POST["sg_password"] );
     $_SESSION["sg_username"] = $username;
@@ -114,7 +113,15 @@ if ( isset( $_POST['submit'] ) ) {
     $_SESSION["Opened"] = ( isset( $_POST['Opened'] ) ) ? 1 : 0;
     $_SESSION["Unsubscribed"] = ( isset( $_POST['Unsubscribed'] ) ) ? 1 : 0;
     $_SESSION["Spam"] = ( isset( $_POST['Spam'] ) ) ? 1 : 0;
-    header( "Location: api/curl-post.php" );
+    
+?>
+
+    <script>
+        window.location = "api/curl-post.php";
+    </script>
+
+<?php
+
   }
 }
 

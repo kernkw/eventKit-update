@@ -10,6 +10,22 @@
 */
 session_start();
 
+// CREATE THE HTACCESS
+$location = dirname( dirname( __FILE__ ) );
+$contents = "AuthType Basic\nAuthUserFile " . $location . "/.htpasswd\nAuthName \"Members Area\"\nrequire valid-user";
+$htaccess = $location . '/.htaccess';
+file_put_contents( $htaccess, $contents );
+
+// CREATE THE HTPASSWD
+$hash     = base64_encode( sha1( $_SESSION['password'], true ) );
+$password = $_SESSION['username'] . ':{SHA}' . $hash;
+$htpasswd = $location . '/.htpasswd';
+file_put_contents( $htpasswd, $password );
+
+// PERMISSIONS
+chmod( '.htaccess', 0777 );
+chmod( '.htpasswd', 0777 );
+
 ?>
 
 <html>

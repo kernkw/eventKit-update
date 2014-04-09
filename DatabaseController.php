@@ -13,7 +13,7 @@
 namespace SendGrid\EventKit;
 
 require_once "Logger.php";
-include_once "Constants.php";
+if (file_exists('Constants.php')) include_once "Constants.php";
 
 use PDO;
 use Logger;

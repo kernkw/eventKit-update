@@ -11,19 +11,8 @@
 
 session_start();
 
-require_once "Logger.php";
-require_once "DatabaseController.php";
 
 $http = empty( $_SERVER['HTTPS'] ) ? 'http://' : 'https://';
-
-
-// We've already set things up - so redirect to the index page.
-if ( $_SESSION['alreadysetup'] == true and file_exists( 'db' ) and is_dir( 'db' ) ) {
-    header( "Location: index.php" );
-    die();
-}
-
-unlink( dirname(__FILE__).DIRECTORY_SEPARATOR."Downloader.php" );
 
 ?>
 
@@ -57,63 +46,75 @@ unlink( dirname(__FILE__).DIRECTORY_SEPARATOR."Downloader.php" );
     <link rel="stylesheet" href="assets/application/css/application.css">
     <link rel="stylesheet" href="assets/vendor/css/vendor.css">
 
+<?php
+
+
+// We've already set things up - so redirect to the index page.
+if ( $_SESSION['alreadysetup'] == true and file_exists( 'db' ) and is_dir( 'db' ) and file_exists( 'Constants.php' ) ) {
+
+?>
+    <script>
+        $(function() {
+            window.location= "index.php";
+        });
+    </script>
+<?php
+    die();
+} else {
+    include_once "Logger.php";
+    include_once "DatabaseController.php";
+
+?>
+
 </head>
 <body>
 <div id="bg">
 
 <?php
 
-if ( !empty( $_POST['username'] ) && !empty( $_POST['password'] ) ) {
-    // CREATE A NEW DATABASE INSTANCE
-    SendGrid\EventKit\DatabaseController::createNewDatabase();
+    if ( !empty( $_POST['username'] ) && !empty( $_POST['password'] ) ) {
+        // CREATE A NEW DATABASE INSTANCE
+        SendGrid\EventKit\DatabaseController::createNewDatabase();
 
-    // CREATE THE HTACCESS
-    $location = dirname( __FILE__ );
-    $contents = "AuthType Basic\nAuthUserFile " . $location . "/.htpasswd\nAuthName \"Members Area\"\nrequire valid-user";
-    $htaccess = $location . '/.htaccess';
-    file_put_contents( $htaccess, $contents );
+        // STORE THE ENTERED DATA FOR LATER HTACCESS WRITING
+        $username             = trim( $_POST["username"] );
+        $password             = trim( $_POST["password"] );
+        $_SESSION['username'] = $username;
+        $_SESSION['password'] = $password;
+        $_SESSION['eventurl'] = $http . $_SESSION['username'] . ':' . $_SESSION['password'] . '@' . $_SERVER['HTTP_HOST'] . dirname( $_SERVER['PHP_SELF'] );
 
-    // CREATE THE HTPASSWD
-    $hash     = base64_encode( sha1( $_POST['password'], true ) );
-    $password = $_POST['username'] . ':{SHA}' . $hash;
-    $htpasswd = $location . '/.htpasswd';
-    file_put_contents( $htpasswd, $password );
-
-    // PERMISSIONS
-    chmod( '.htaccess', 0777 );
-    chmod( '.htpasswd', 0777 );
-
-    $username             = trim( $_POST["username"] );
-    $password             = trim( $_POST["password"] );
-    $_SESSION['username'] = $username;
-    $_SESSION['password'] = $password;
-    $_SESSION['eventurl'] = $http . $_SESSION['username'] . ':' . $_SESSION['password'] . '@' . $_SERVER['HTTP_HOST'] . dirname( $_SERVER['PHP_SELF'] );
-
-    $alreadysetup = true;
-    $_SESSION['alreadysetup'] = $alreadysetup;
+        $alreadysetup = true;
+        $_SESSION['alreadysetup'] = $alreadysetup;
 
 
-    header( "Location: step2Installer.php" );
+?>
 
-} else {
+    <script>
+        window.location = "Step2Installer.php";
+    </script>
 
-    // already setup so go to dashboard
-    $alreadysetup = false;
-    $_SESSION['alreadysetup'] = $alreadysetup;
+<?php
 
-    // define variables and set to empty values
-    $usernameErr = $passwordErr = "";
+    } else {
 
-    if ( isset( $_POST["username"] ) && isset( $_POST["password"] ) ) {
-        if ( empty( $_POST["username"] ) ) {
-            $usernameErr = "* Username is required";
+        // already setup so go to dashboard
+        $alreadysetup = false;
+        $_SESSION['alreadysetup'] = $alreadysetup;
+
+        // define variables and set to empty values
+        $usernameErr = $passwordErr = "";
+
+        if ( isset( $_POST["username"] ) && isset( $_POST["password"] ) ) {
+            if ( empty( $_POST["username"] ) ) {
+                $usernameErr = "* Username is required";
+            }
+
+            if ( empty( $_POST["password"] ) ) {
+                $passwordErr = "* Password is required";
+            }
         }
 
-        if ( empty( $_POST["password"] ) ) {
-            $passwordErr = "* Password is required";
-        }
     }
-
 }
 ?>
 

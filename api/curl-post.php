@@ -1,9 +1,17 @@
 <?php
 
 session_start();
-
 require_once "../Logger.php";
 require_once  "../DatabaseController.php";
+
+?>
+
+<html>
+<head>
+  <title>SendGrid Event Webhook Starter Kit</title>
+  <script>
+    function init() {
+<?php
 
 // CREATE POST TO SETUP USERS EVENT NOTIFICATIONS APP WITH NEW ENDPOINT
 
@@ -85,12 +93,32 @@ curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 $response_2 = curl_exec($session);
 curl_close($session);
 
-if (($response_1 === '{"message": "success"}') && ( $response_2 === '{"message": "success"}')) {
+$response_1_json = json_decode($response_1, true);
+$response_2_json = json_decode($response_2, true);
+
+if (($response_1_json['message'] == 'success') && ($response_2_json['message'] == 'success')) {
 //if ($response_1 === '{"message":"success"}') {
- header("Location: success.php");
-} 
-else {
- header("Location: ../step2Installer.php?error1=$response_1&error2=$response_2");
+
+?>
+
+        window.location = "success.php";
+
+<?php
+
+} else {
+
+?>
+
+        window.location = '../Step2Installer.php?error1=<?php echo $response_1?>&error2=<?php echo $response_2?>';
+
+<?php
+
+
 }
 
 ?>
+    }
+  </script>
+</head>
+<body onload="init();">
+</body>

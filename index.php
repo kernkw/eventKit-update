@@ -11,7 +11,7 @@
  *
  */
 
-require_once("DatabaseController.php");
+require_once "DatabaseController.php";
 
 if ( !file_exists( 'db' ) or !is_dir( 'db' ) ) {
     // If there's no database, go to the Installer to setup everything.
@@ -20,10 +20,10 @@ if ( !file_exists( 'db' ) or !is_dir( 'db' ) ) {
 }
 
 // DETERMINE IF THERE'S POST DATA
-if (isset($HTTP_RAW_POST_DATA)) {
+if ( $_SERVER['HTTP_USER_AGENT'] == 'SendGrid Event API' ) {
     $db = new SendGrid\EventKit\DatabaseController();
-    $response = $db->processPost($HTTP_RAW_POST_DATA);
-    header($response);
+    $response = $db->processPost( $HTTP_RAW_POST_DATA );
+    header( $response );
     return;
 } else {
     // IF THERE ISN'T ANY POST DATA, SHOW THE GUI
@@ -33,11 +33,11 @@ if (isset($HTTP_RAW_POST_DATA)) {
 <html lang="en">
 <head>
     <title>SendGrid Event Webhook Starter Kit</title>
-    
+
     <!--META TAGS-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
+
+
     <!--STYLES-->
     <link rel="stylesheet" href="assets/vendor/css/vendor.css">
     <link rel="stylesheet" href="assets/application/css/application.css">

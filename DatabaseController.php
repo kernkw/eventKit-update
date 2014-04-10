@@ -189,8 +189,7 @@ class DatabaseController {
         // This starter kit uses V3 of the SendGrid Event Webhook, and is
         // expecting an array.  If our parsed data isn't an array, throw
         // an error.
-
-        if ( !is_array( $parsed ) or $this->isAssociativeArray( $parsed ) ) {
+        if ( !is_array( $parsed ) ) {
             Logger::logError( "The parsed body received is not an indexed array as expected: ".var_export( $parsed, true ) );
             return "HTTP/1.0 400 Received a body that is not an array.";
         }
@@ -200,7 +199,6 @@ class DatabaseController {
         foreach ( $parsed as $notification ) {
             $this->insertNotification( $notification );
         }
-
         return "HTTP/1.0 200 Event POST accepted.";
     }
 

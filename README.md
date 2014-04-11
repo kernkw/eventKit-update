@@ -9,20 +9,13 @@ The SendGrid Event Webhook Starter Kit (or "Event Kit") is an open source projec
 
 # Quick Installation
 
-If you just wish to install the project on your web server, you can do so by following the steps below:
+If you just wish to install the project on your web server, you can do so by following the steps [here](http://sendgrid.github.io/eventkit/setup.html).
 
-**Step 1 - Download The App**
+# Developing
 
-First, download the installer file by [clicking here](https://github.com/sendgrid/eventkit/blob/master/quick_installer/event_kit.zip?raw=true).
+This project uses [EmberJS](http://emberjs.com) for the frontend and [Grunt](http://gruntjs.com) to handle asset concatenation and minification.  If you don't have Grunt installed on your system, first go [here](http://gruntjs.com/getting-started).  Once Grunt is installed, you'll want to make sure you have all the Grunt Modules for the project installed by running the following in your command line:
 
-**Step 2 - Upload the App**
+    cd /path/to/eventkit/folder
+    npm install
 
-Unzip the file and copy all the files to your web server (wherever you place it on your web server is where you'll be viewing the application).
-
-**Step 3 - Visit The App In Your Web Browser**
-
-Visit wherever you uploaded the files in your web browser.  The installer will start downloading all the necessary files and present you with a setup guide to get the endpoint going.  The application will also configure your SendGrid account to start sending notifications to your new endpoint.
-
-**Step 4 - All Set!**
-
-After that you should be all set! You can revisit your endpoint at any time to view your events or search.
+Once the modules are installed, you should be all set.  When you make changes to the javascript and css files, make sure you run `grunt` from your project directory to concatenate all the files.  You can also run `grunt prod` to concatenate everything and minify it and place it into the "production" folder for a clean working copy. You can also run `php -S localhost:8000` from the project directory to get a local PHP server running the app.

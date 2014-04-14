@@ -81,7 +81,7 @@ if ( $_SESSION['alreadysetup'] == true and file_exists( 'db' ) and is_dir( 'db' 
         $password             = trim( $_POST["password"] );
         $_SESSION['username'] = $username;
         $_SESSION['password'] = $password;
-        $_SESSION['eventurl'] = $http . $_SESSION['username'] . ':' . $_SESSION['password'] . '@' . $_SERVER['HTTP_HOST'] . dirname( $_SERVER['PHP_SELF'] );
+        $_SESSION['eventurl'] = $http . $_SESSION['username'] . ':' . $_SESSION['password'] . '@' . $_SERVER['HTTP_HOST'] . dirname( $_SERVER['PHP_SELF'] ).'/index.php';
 
         $alreadysetup = true;
         $_SESSION['alreadysetup'] = $alreadysetup;

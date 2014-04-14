@@ -66,7 +66,7 @@ class Logger
         self::prepLogs();
         $file = fopen(join(DIRECTORY_SEPARATOR, array(self::$log_folder, $file)), 'a+');
         if ($file) {
-            fwrite($file, date(DATE_ISO8601)." (".time().") ".trim(preg_replace('/\s+/', ' ', $value))."\n");
+            fwrite($file, time().' '.trim(preg_replace('/\s+/', ' ', $value))."\n");
             fclose($file);
         }
     }

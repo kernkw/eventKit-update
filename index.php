@@ -22,7 +22,7 @@ if ( !file_exists( 'db' ) or !is_dir( 'db' ) ) {
 // DETERMINE IF THERE'S POST DATA
 if ( $_SERVER['HTTP_USER_AGENT'] == 'SendGrid Event API' ) {
     $db = new SendGrid\EventKit\DatabaseController();
-    $response = $db->processPost( $HTTP_RAW_POST_DATA );
+    $response = $db->processPost( file_get_contents( "php://input" ) );
     header( $response );
     return;
 } else {

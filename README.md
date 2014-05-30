@@ -11,6 +11,7 @@ The SendGrid Event Webhook Starter Kit (or "Event Kit") is an open source projec
 
 If you just wish to install the project on your web server, you can do so by following the steps [here](http://sendgrid.github.io/eventkit/setup.html).
 
+You can also view our Video Tutorial of EventKit by clicking [here](https://sendgrid.com/docs/VidGrid/Event_Notification/eventkit.html)
 # Developing
 
 This project uses [EmberJS](http://emberjs.com) for the frontend and [Grunt](http://gruntjs.com) to handle asset concatenation and minification.  If you don't have Grunt installed on your system, first go [here](http://gruntjs.com/getting-started).  Once Grunt is installed, you'll want to make sure you have all the Grunt Modules for the project installed by running the following in your command line:

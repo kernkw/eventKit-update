@@ -11,8 +11,6 @@ App.SearchController = Ember.Controller.extend({
                     text: decodeURIComponent(this.get('model.query')),
                     query: 'wildcard',
                     csv: true,
-                    offset: 0,
-                    resultsPerPage: kResultsPerPage
                 };
             window.location = "api/search.php?" + $.param(params);
         }

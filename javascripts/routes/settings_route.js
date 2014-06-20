@@ -46,6 +46,24 @@ App.SettingsRoute = Ember.Route.extend({
             }],
             selectedAutoDeleteValue: 6
         },
+            eventsPerPage: [{
+                title: "10 events",
+                value: 10
+            }, {
+                title: "50 events",
+                value: 50
+            }, {
+                title: "100 events",
+                value: 100
+            }, {
+                title: "500 events",
+                value: 500
+            }, {
+                title: "1000 events",
+                value: 1000
+            }],
+            selectedEventsPerPage: 10
+        },
 
             params = {
                 query: 'settings'
@@ -58,6 +76,9 @@ App.SettingsRoute = Ember.Route.extend({
                     if (item.setting = "autodelete") {
                         model.selectedAutoDeleteValue = item.value * 1;
                     }
+                    if (item.setting = "eventsPerPage") {
+                        model.selectedEventsPerPage = item.value * 1;
+                    } 
                 });
             }
             return model;

@@ -10,6 +10,15 @@
                value=model.selectedAutoDeleteValue}}
             old.
         </p>
+        <p>Display  
+            {{view Ember.Select
+               content=model.eventsPerPage
+               optionValuePath="content.value"
+               optionLabelPath="content.title"
+               value=model.selectedEventsPerPage}}
+            events per page.
+        </p>
+        
         <p style="text-align:right;"><button {{action "save"}} class="btn btn-primary">Save</button></p>
     </div>
 </div>

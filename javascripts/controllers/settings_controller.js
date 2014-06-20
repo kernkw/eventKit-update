@@ -12,6 +12,11 @@ App.SettingsController = Ember.Controller.extend({
                     query: 'save_settings',
                     autodelete: autodelete
                 };
+            var resultsdisplayed = this.get("model.selectedEventsPerPage") * 1,
+                params = {
+                    query: 'save_settings',
+                    eventsPerPage: eventsPerPage
+                };
             $.get('api/search.php?' + $.param(params), function(data) {
                 if (data) {
                     alert("Your changes have been saved!");
@@ -20,6 +25,7 @@ App.SettingsController = Ember.Controller.extend({
                     alert("Uh oh! Something went wrong.");
                 }
             });
+
         }
     }
 });

@@ -11,7 +11,7 @@ App.ApplicationController = Ember.Controller.extend({
 
 	actions: {
 		search: function() {
-			var resultsPerPage = 10,
+			var resultsPerPage = eventsPerPage,
 				page = 1,
 				query = {
 					query: "wildcard",

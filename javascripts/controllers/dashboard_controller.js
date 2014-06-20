@@ -13,7 +13,7 @@ App.DashboardController = Ember.Controller.extend({
 		search: function() {
 			var query = this.get('query'),
 				page = 1,
-				resultsPerPage = 10,
+				resultsPerPage = eventsPerPage,
 				self = this;
 
 			Ember.$.getJSON('api/search.php?query=wildcard&resultsPerPage=' + resultsPerPage + '&text=' + query).then(function(response) {

@@ -141,6 +141,9 @@ class DatabaseController {
             $default_autodelete = "INSERT INTO settings (setting, value) VALUES ('autodelete', '6')";
             $file_db->exec( $default_autodelete );
 
+            $default_eventsPerPage = "INSERT INTO settings (setting, value) VALUES ('eventsPerPage', '10')";
+            $file_db->exec( $default_eventsPerPage );
+
             Logger::logSystem( "Created table \"settings\" in the database and set a default auto delete value to 6 months." );
         } catch( Exception $e ) {
             // LOG THE ERROR
